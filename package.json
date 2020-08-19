@@ -1,6 +1,10 @@
 {
   "name": "fishing_log_2",
   "private": true,
+  "engines": {
+    "node": ">=6.0.0",
+    "yarn": ">=0.25.0"
+  },
   "dependencies": {
     "@babel/core": "^7.5.5",
     "@babel/plugin-proposal-class-properties": "^7.0.0",
