@@ -53,3 +53,6 @@ gem 'shoulda-matchers', group: [:development, :test], require: false
 gem 'devise'
 gem 'bulma-rails', '~> 0.9.0'
 gem 'webpacker', '~> 3.3'
+gem 'active_model_serializers'
+gem 'faraday', '~>0.9.2'
+gem 'fog-aws'
