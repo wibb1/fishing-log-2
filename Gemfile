@@ -51,5 +51,8 @@ gem 'database_cleaner', group: [:development, :test]
 gem 'valid_attribute', group: [:development, :test]
 gem 'shoulda-matchers', group: [:development, :test], require: false
 gem 'devise'
-gem 'foundation-rails', '~> 6.5'
+gem 'bulma-rails', '~> 0.9.0'
 gem 'webpacker', '~> 3.3'
+gem 'active_model_serializers'
+gem 'faraday', '~>0.9.2'
+gem 'fog-aws'
