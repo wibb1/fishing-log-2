@@ -1,0 +1,121 @@
+@charset "utf-8";
+@import "../../../node_modules/bulma/sass/utilities/initial-variables";
+@import "../../../node_modules/bulma/sass/utilities/functions";
+// Import a Google Font
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900,900i');
+
+// 2. Set your brand cloros
+
+$dark-blue: #211f1e;
+$dark-blue-invert: findColorInvert($dark-blue);
+$light-blue: rgb(203, 228, 245);
+$light-blue-invert: findColorInvert($light-blue);
+$med-blue: #7c94ac;
+$med-blue-invert: findColorInvert($med-blue);
+$tan: #7fff00;
+$tan-invert: findColorInvert($tan);
+$deep-blue: #6bb4cc;
+$deep-blue-invert: findColorInvert($deep-blue);
+$pale-red: #f76a6a;
+$pale-red-invert: findColorInvert($pale-red);
+$pale-green: rgb(218, 247, 188);
+$pale-green-invert: findColorInvert($pale-green);
+$pale-yellow: #ece711;
+$pale-yellow-invert: findColorInvert($pale-yellow);
+
+// Add a serif family
+$family-serif: "Roboto", serif;
+
+// 3. Set the derived variables
+
+$light: $light-blue;
+$light-invert: $light-blue-invert;
+$dark: $dark-blue;
+$dark-invert: $dark-blue-invert;
+$primary: $deep-blue;
+$primary-invert: $deep-blue-invert;
+$link: $med-blue;
+$info: $tan;
+$success: $pale-green;
+$warning: $pale-yellow;
+$danger: $pale-red;
+
+
+// Use the new serif family
+$family-primary: $family-serif;
+
+// 4. Setup your Custom Colors
+$linkedin: #0077b5;
+$linkedin-invert: findColorInvert($linkedin);
+$twitter: #55acee;
+$twitter-invert: findColorInvert($twitter);
+$github: #333;
+$github-invert: findColorInvert($github);
+
+// 5. Add new color variables to the color map.
+@import "../../../node_modules/bulma/sass/utilities/derived-variables";
+$addColors: (
+  "twitter": (
+    $twitter,
+    $twitter-invert,
+  ),
+  "linkedin": (
+    $linkedin,
+    $linkedin-invert,
+  ),
+  "github": (
+    $github,
+    $github-invert,
+  ),
+);
+$colors: map-merge($colors, $addColors);
+$table-background-color: transpasparent;
+// 6. Import the rest of Bulma
+@import "../../../node_modules/bulma/bulma.sass";
+
+
+$sizeUnit: rem;
+$marginKey: 'm';
+$paddingKey: 'p';
+$separator: '-';
+$sizes: (
+    ('none', 0),
+    ('xxs', 0.125),
+    ('xs', 0.25),
+    ('sm', 0.5),
+    ('md', 1),
+    ('lg', 2),
+    ('xl', 4),
+    ('xxl', 8),
+);
+$positions: (
+    ('t', 'top'),
+    ('r', 'right'),
+    ('b', 'bottom'),
+    ('l', 'left')
+);
+
+@function sizeValue($key, $value) {
+    @return if($key == 'none', 0, $value + $sizeUnit);
+}
+
+@each $size in $sizes {
+    $sizeKey: nth($size, 1);
+    $sizeValue: nth($size, 2);
+    .#{$marginKey}#{$separator}#{$sizeKey} {
+        margin: sizeValue($sizeKey, $sizeValue);
+    }
+    .#{$paddingKey}#{$separator}#{$sizeKey} {
+        padding: sizeValue($sizeKey, $sizeValue);
+    }
+    @each $position in $positions {
+        $posKey: nth($position, 1);
+        $posValue: nth($position, 2);
+        .#{$marginKey}#{$separator}#{$posKey}#{$separator}#{$sizeKey} {
+            margin-#{$posValue}: sizeValue($sizeKey, $sizeValue);
+        }
+        .#{$paddingKey}#{$separator}#{$posKey}#{$separator}#{$sizeKey} {
+            padding-#{$posValue}: sizeValue($sizeKey, $sizeValue);
+        }
+    }
+}
