@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const RecordTile = ({ name, success, id }) => {
+const RecordTile = ({ id, name, success, body, latitude, longitude, date, time }) => {
 	const success_color = (success) => {
 		let success_color;
 		if (success === 'Good') {
@@ -25,7 +25,7 @@ const RecordTile = ({ name, success, id }) => {
 									</div>
 									<div className="column is-vcentered">
 										<div className="subtitle is-size-3 is-size-4-touch">
-											<p className="has-text-right">":date:"":time:"</p>
+											<p className="has-text-right">{date} {time}</p>
 										</div>
 									</div>
 								</div>
@@ -41,7 +41,7 @@ const RecordTile = ({ name, success, id }) => {
 							<hr />
 						</div>
 							<div className="box">
-								<p className="is-6">":body:"</p>
+								<p className="is-6">{body}</p>
 							</div>
 							<div className="columns">
 								<div className="column m-2">
@@ -142,8 +142,4 @@ const RecordTile = ({ name, success, id }) => {
 	);
 };
 
-<<<<<<< Updated upstream
 export default RecordTile;
-=======
-export default recordTile;
->>>>>>> Stashed changes
