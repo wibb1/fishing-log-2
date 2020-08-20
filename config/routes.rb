@@ -4,6 +4,8 @@ Rails.application.routes.draw do
 
   get '/records/react', to: "records#index"
 
+  resources :records, only: [:new, :create, :edit, :update]
+
   namespace :api do
     namespace :v1 do
       resources :records, only: [:index] 
