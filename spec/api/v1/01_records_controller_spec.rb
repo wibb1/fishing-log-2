@@ -70,7 +70,7 @@ RSpec.describe Api::V1::RecordsController, type: :controller do
     it "returns user1 records in the database" do
       sign_in user1
       get :show, params: { id: record1.id }
-  binding.pry    
+   
       returned_json = JSON.parse(response.body)
 
       expect(returned_json["record"]["name"]).to eq(record1.name)
