@@ -38,19 +38,11 @@ RSpec.describe Api::V1::RecordsController, type: :controller do
 
     let!(:user1) {User.create(email: "thumb@aol.com", password: "123456", user_name: "Tommy", first_name: "Tom", last_name: "Thumb")}
 
-    let!(:record1) {Record.create(name: "User 1 First Record", success: "Good", user_id: user1.id)}
+    let!(:record1) {Record.create(name: "User 1 First Record", success: "good", user_id: user1.id, latitude: 41.8, longitude: -70.6, date: Date.new(2020,4,20).to_s, time: "09:45", datetime: Time.new(2020,8,20,9,45))}
 
     let!(:user2) {User.create(email: "apple@aol.com", user_name: "user2", password: "123456", first_name: "John", last_name: "Apple")}
 
-    let!(:record2) {Record.create(name: "User 2 First Record", success: "Good", user_id: user2.id)}
-
-    let!(:user1) {User.create(email: "thumb@aol.com", password: "123456", user_name: "Tommy", first_name: "Tom", last_name: "Thumb")}
-
-    let!(:record1) {Record.create(name: "User 1 First Record", success: "Good", user_id: user1.id)}
-
-    let!(:user2) {User.create(email: "apple@aol.com", user_name: "user2", password: "123456", first_name: "John", last_name: "Apple")}
-
-    let!(:record2) {Record.create(name: "User 2 First Record", success: "Good", user_id: user2.id)}
+    let!(:record2) {Record.create(name: "User 2 First Record", success: "good", user_id: user2.id, latitude: 41.8, longitude: -70.6, date: Date.new(2020,4,20).to_s, time: "09:45", datetime: Time.new(2020,8,20,9,45))}
 
     it "returns a status of 200 - records_controller_spec" do
           
