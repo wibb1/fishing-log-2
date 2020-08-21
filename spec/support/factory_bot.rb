@@ -13,7 +13,7 @@ end
 
   FactoryBot.define do
     factory :record do
-      sequence(:name) { |n| "trip#{n}" }
+      sequence(:name) { |n| "record#{n}" }
       success {'success'}
       species {'species'}
       body {'body'}

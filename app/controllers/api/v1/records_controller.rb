@@ -4,6 +4,10 @@ class Api::V1::RecordsController < ApiController
     render json: { records: serialized_data( records, RecordSerializer, current_user) }
   end
 
+  def show
+    render json: Record.find(params[:id]), serializer: RecordShowSerializer
+  end
+
   private
 
   def serialized_data(data, serializer, scope)
