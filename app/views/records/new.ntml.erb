@@ -56,17 +56,11 @@
         </div>
       </div>
 
-      <div class="field">
-        <%= f.label :date, :class => "label" %>
-        <div class="control">
-          <%= f.date_field :date, max: Date.today, :class => "input" %>
-        </div>
-      
       </div>
       <div class="field">
-        <%= f.label :time, :class => "label" %>
+        <%= f.label :datetime, :class => "label" %>
         <div class="control">
-          <%= f.time_field :time, :class=> "input", :required => true  %>
+          <%= f.datetime_select :datetime, max: Time.now(), :class=> "input", :required => true  %>
         </div>
       </div>
 
@@ -77,7 +71,7 @@
             <%= f.select :shared, ["Shared", "Private"], :prompt => "Select One", :required => true %>
           </div>
         </div>
-      </div>    
+      </div>
 
       <div class="field">
         <%= f.submit "Submit", :class =>"button is-primary has-text-weight-bold" %>
