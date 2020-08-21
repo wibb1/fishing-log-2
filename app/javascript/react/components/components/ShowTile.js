@@ -53,7 +53,7 @@ const ShowTile = ({ record }) => {
 									>
 										<div className="box">
 											<p>
-												":record.date:" ":record.time:"
+												{record.datetime}
 											</p>
 										</div>
 										<div className="box center">
@@ -66,12 +66,12 @@ const ShowTile = ({ record }) => {
 													</tr>
 													<tr>
 														<td>Latitude</td>
-														<td>":record.latitude:"</td>
+														<td>{record.latitude}</td>
 														<td>N</td>
 													</tr>
 													<tr>
 														<td>Longitude</td>
-														<td>":record.longitude:"</td>
+														<td>{record.longitude}</td>
 														<td>E</td>
 													</tr>
 												</tbody>
@@ -91,7 +91,7 @@ const ShowTile = ({ record }) => {
 								<div className="tile is-parent">
 									<article className={`tile is-child center notification ${success_color(record.success)}`}>
 										<div className="box is-fullheight center">
-											<h1>":record.body:"</h1>
+											<h1>{record.body}</h1>
 										</div>
 									</article>
 								</div>

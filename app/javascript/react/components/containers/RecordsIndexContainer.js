@@ -31,9 +31,14 @@ const RecordsIndexContainer = (props) => {
 		return (
 			<RecordTile
 				key={record.id}
+				id={record.id}
 				name={record.name}
 				success={record.success}
-				
+				body={record.body}
+				latitude={record.latitude}
+				longitude={record.longitude}
+				date={record.date}
+				time={record.time}			
 			/>
 		);
 	});
