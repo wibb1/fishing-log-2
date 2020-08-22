@@ -6,7 +6,7 @@ const RecordTile = ({ id, name, success, body, latitude, longitude, date, time }
 		let success_color;
 		if (success === 'Good') {
 			success_color = 'is-success';
-		} else {
+		} else if (success === 'Bad') {
 			success_color = 'is-light';
 		}
 		return success_color;

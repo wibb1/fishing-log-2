@@ -19,6 +19,9 @@ Bundler.require(*Rails.groups)
 
 module FishingLog2
   class Application < Rails::Application
+    # Initialize eastern time zone for all dates and times
+    config.time_zone = 'Eastern Time (US & Canada)'
+    #config.active_record.default_timezone = :local
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.2
 

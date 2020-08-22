@@ -8,12 +8,12 @@
 
 <div class="section-indent m-md">
   <div class="container has-text-dark">
-  <%= form_for(@record) do |f| %>
+  <%= form_for(@record_new) do |f| %>
    
       <div class="field">
         <%= f.label :name, :class => "label" %>
         <div class="control">
-          <%= f.text_field :name, placeholder: "Spot Name", :class => "input", :required => true %>
+          <%= f.text_field :name, placeholder: "Name", :class => "input", :required => true %>
         </div>
       </div>
 
@@ -27,16 +27,7 @@
       </div>
 
       <div class="field">
-        <%= f.label :species, :class => "label" %>
-        <div class="control">
-          <div class="select">
-            <%= f.select :species, @species_list, :prompt => "Select One", :required => true %>
-          </div>
-        </div>
-      </div>
-
-      <div class="field">
-        <%= f.label :body, "Spot Description", :class => "label" %>
+        <%= f.label :body, "Description", :class => "label" %>
         <div class="control">
           <%= f.text_area :body, placeholder: "Description", :class => "textarea" %>
         </div>
@@ -60,16 +51,7 @@
       <div class="field">
         <%= f.label :datetime, :class => "label" %>
         <div class="control">
-          <%= f.datetime_select :datetime, max: Time.now(), :class=> "input", :required => true  %>
-        </div>
-      </div>
-
-      <div class="field">
-        <%= f.label :shared, :class => "label" %>
-        <div class="control">
-          <div class="select">
-            <%= f.select :shared, ["Shared", "Private"], :prompt => "Select One", :required => true %>
-          </div>
+          <%= f.datetime_select :datetime, { order: [:day, :month, :year, :hour, :minute] }, max: Time.now().advance(hour: -1), default: Time.now().advance(hour: -1), :class=> "input", :required => true  %>
         </div>
       </div>
 
@@ -78,7 +60,5 @@
       </div>
 
     <% end %>
-
-    
   </div>
 </div>
