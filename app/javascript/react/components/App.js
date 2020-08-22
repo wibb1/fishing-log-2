@@ -13,6 +13,6 @@ export const App = (props) => {
       </Switch>
     </BrowserRouter>
   )
-}
+} 
 
 export default App

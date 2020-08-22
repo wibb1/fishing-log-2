@@ -82,7 +82,7 @@ const ShowTile = ({ record }) => {
 								<div className="tile is-parent">
 									<article className={`tile is-child notification ${success_color(record.success)} center`}>
 										<figure className="image is-fullwidth">
-											<img src="https://cors-anywhere.herokuapp.com/https://bulma.io/images/placeholders/640x480.png"></img>
+											<img src="../app/assets/images/640x480.png"></img>
 										</figure>
 									</article>
 								</div>
