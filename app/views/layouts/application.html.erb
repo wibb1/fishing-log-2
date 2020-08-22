@@ -6,22 +6,41 @@
   <%= stylesheet_link_tag 'application', media: 'all' %>
   <%= csrf_meta_tags %>
 </head>
-<body>
-  
-  <nav class="top-bar">
-    <h1><a href="/">FishingLog2</a></h1>
 
-    <section class="top-bar-section">
-      <ul class="right">
-        <%- if current_user -%>
-          <li><%= link_to 'Sign Out', destroy_user_session_path, method: :delete %></li>
-        <%- else -%>
-          <li><%= link_to 'Sign Up', new_user_registration_path %></li>
-          <li><%= link_to 'Sign In', new_user_session_path %></li>
-        <%- end -%>
-      </ul>
-    </section>
+<body>
+<nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <img class="navbar-item has-background-dark" src="/assets/bass-fish.png" width="112" height="28">
+      <div class="navbar-item">
+        <p class="is-size-4-touch is-size-3-desktop is-size-2-widescreen is-size-1-fullhd has-text-weight-bold has-text-centered">The Fishing Log </a>
+      </div>
+      <div class="navbar-burger burger" data-target="Options" aria-label="menu" aria-expanded="false" id="burger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+    <div class="navbar-menu" id="Options">
+      <div class="navbar-start">
+      </div>
+      <div class="navbar-end">
+        <div class="navbar-item is-hoverable">
+          <div class="navbar-item">
+            <a class="button has-text-weight-bold m-md" href="/"> Home </a>
+            <%- if current_user -%>
+                <a class="button has-text-weight-bold m-md" href="/records/react"> Your Spots </a>
+                <a class="button has-text-weight-bold m-md" href="/records/new"> New Spot </a>
+                <%= link_to 'Sign Out', destroy_user_session_path, method: :delete, :class => "button is-dark m-md" %>
+              <%- else -%>
+                <%= link_to 'Sign Up', new_user_registration_path, class: "button is-dark m-md" %>
+                <%= link_to 'Sign In', new_user_session_path, class: "button is-dark m-md"  %>
+              <%- end -%>
+          </div>
+        </div>
+      </div>
+    </div>  
   </nav>
+
 
   <%- flash.each do |key, value| -%>
     <div class="flash flash-<%= key %>">
