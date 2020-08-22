@@ -26,7 +26,8 @@ ActiveRecord::Schema.define(version: 2020_08_20_193947) do
     t.decimal "longitude", null: false
     t.text "date", null: false
     t.text "time", null: false
-    t.datetime "datetime", null: false
+    t.time "datetime", null: false
+    t.float "js_date", null: false
     t.index ["user_id"], name: "index_records_on_user_id"
   end
 
