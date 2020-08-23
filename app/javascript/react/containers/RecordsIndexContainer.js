@@ -44,7 +44,7 @@ const RecordsIndexContainer = (props) => {
 	});
 
 	return (
-		<div>
+		<div className="container">
 			<div className="">
 			<h1 className="title center m-md"> Your Spot List</h1>
 			</div>

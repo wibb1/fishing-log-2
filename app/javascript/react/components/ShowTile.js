@@ -98,7 +98,7 @@ const ShowTile = ({ record }) => {
 							</div>
 							<div className="tile">
 								<div className="tile is-parent">
-									<article className={`tile is-child notification $":success_color(record.success)}`}>
+									<article className={`tile is-child notification ${success_color(record.success)}`}>
 										<div className="box center">
 											<table className="table has-text-centered">
 												<tbody>

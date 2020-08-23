@@ -1,0 +1,29 @@
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.vcenter {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.chart {
+  background-image: url("buzzards_bay_chart.png");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+.navimg {
+  background-image: url("buzzards_bay_chart.png");
+  background-size: cover;
+  min-height: 500;
+  max-height: 500
+}

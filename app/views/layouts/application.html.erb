@@ -47,7 +47,7 @@
       <%= value %>
     </div>
   <%- end -%>
-
+<div class="section" style="max-width:1280px">
   <%= yield %>
 
   <%= javascript_include_tag 'application' %>
@@ -58,7 +58,9 @@
     <%- end -%>
   <%- end -%>
   <%= javascript_pack_tag 'application' %>
-  
+</div>  
+<div class=footer>
   <%= yield :extra_footer %>
+</div>
 </body>
 </html>
