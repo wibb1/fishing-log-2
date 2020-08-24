@@ -1,5 +1,6 @@
 class RecordsController < ApplicationController
 require 'date'
+require 'faraday'
 
   def new
     @record_new = Record.new()
@@ -21,11 +22,11 @@ require 'date'
 
   def destroy
     Record.destroy(params[:id])
-    redirect_to '/trips/react'
+    redirect_to '/records/react'
   end
 
   def create
-    time = Time.zone.local(create_params["datetime(1i)"], create_params["datetime(2i)"], create_params["datetime(3i)"], create_params["datetime(4i)"], create_params["datetime(5i)"])
+    time = Time.local(create_params["datetime(1i)"], create_params["datetime(2i)"], create_params["datetime(3i)"], create_params["datetime(4i)"], create_params["datetime(5i)"])
 
     @record_new = Record.new()
     @record_new.name = create_params["name"]
@@ -34,13 +35,10 @@ require 'date'
     @record_new.latitude = create_params["latitude"]
     @record_new.longitude = create_params["longitude"]
     @record_new.datetime = time
-
     @record_new.date = time.strftime("%Y-%m-%dT%H:%M:%S%z")
     @record_new.time = time.strftime("%H:%M")
     @record_new.js_date = time.to_f * 1000
     @record_new.user = current_user
-
-    @record_new = Record.new(name: @record_new.name, success: @record_new.success, body: @record_new.body, latitude: @record_new.latitude, longitude: @record_new.longitude, datetime: @record_new.datetime, date: @record_new.date, time: @record_new.time, js_date: @record_new.js_date, user: @record_new.user)
 
     puts "--------------------"
     puts @record_new.name

@@ -51,7 +51,7 @@
       <div class="field">
         <%= f.label :datetime, :class => "label" %>
         <div class="control">
-          <%= f.datetime_select :datetime, { order: [:day, :month, :year, :hour, :minute] }, max: Time.now().advance(hour: -1), default: Time.now().advance(hour: -1), :class=> "input", :required => true  %>
+          <%= f.datetime_select :datetime, { order: [:day, :month, :year, :hour, :minute] }, max: Time.now().advance(hour: -1), :class=> "input", :required => true  %>
         </div>
       </div>
 
