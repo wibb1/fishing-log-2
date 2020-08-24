@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const ShowTile = ({ record }) => {
-	// debugger
+
 	const success_color = (success) => {
 		let success_color;
 		if (success === 'Good') {
@@ -53,7 +53,7 @@ const ShowTile = ({ record }) => {
 									>
 										<div className="box">
 											<p>
-												{record.datetime}
+												{record.date}
 											</p>
 										</div>
 										<div className="box center">
@@ -82,7 +82,7 @@ const ShowTile = ({ record }) => {
 								<div className="tile is-parent">
 									<article className={`tile is-child notification ${success_color(record.success)} center`}>
 										<figure className="image is-fullwidth">
-											<img src="../app/assets/images/640x480.png"></img>
+											<img src="../../assets/480x640.png"></img>
 										</figure>
 									</article>
 								</div>
@@ -104,19 +104,19 @@ const ShowTile = ({ record }) => {
 												<tbody>
 													<tr>
 														<td>Moon Fraction</td>
-														<td>":record.astro.moonFraction:"</td>
+														<td>{record.moonFraction}</td>
 													</tr>
 													<tr>
 														<td>Moon Phase</td>
-														<td>":record.astro.moonPhase:"</td>
+														<td>{record.moonPhase}</td>
 													</tr>
 													<tr>
 														<td>Moonrise</td>
-														<td>":record.astro.moonrise:"</td>
+														<td>{record.moonrise}</td>
 													</tr>
 													<tr>
 														<td>Moonset</td>
-														<td>":record.astro.moonset:"</td>
+														<td>{record.moonset}</td>
 													</tr>
 												</tbody>
 											</table>
@@ -130,27 +130,27 @@ const ShowTile = ({ record }) => {
 												<tbody>
 													<tr>
 														<td>First Light</td>
-														<td>":record.astro.astronomicalDawn:"</td>
+														<td>{record.astronomicalDawn}</td>
 													</tr>
 													<tr>
 														<td>Last Light</td>
-														<td>":record.astro.astronomicalDusk:"</td>
+														<td>{record.astronomicalDusk}</td>
 													</tr>
 													<tr>
 														<td>Civil Dawn</td>
-														<td>":record.astro.civilDawn:"</td>
+														<td>{record.civilDawn}</td>
 													</tr>
 													<tr>
 														<td>Civil Dusk</td>
-														<td>":record.astro.civilDusk:"</td>
+														<td>{record.civilDusk}</td>
 													</tr>
 													<tr>
 														<td>Sunset</td>
-														<td>":record.astro.sunset:"</td>
+														<td>{record.sunset}</td>
 													</tr>
 													<tr>
 														<td>Sunrise</td>
-														<td>":record.astro.sunrise:"</td>
+														<td>{record.sunrise}</td>
 													</tr>
 												</tbody>
 											</table>
@@ -168,35 +168,35 @@ const ShowTile = ({ record }) => {
 												<tbody>
 													<tr>
 														<td>Air Temperature</td>
-														<td>":record.weather.airTemperature:"</td>
+														<td>{record.airTemperature}</td>
 													</tr>
 													<tr>
 														<td>Barometric Pressure</td>
-														<td>":record.weather.pressure:"</td>
+														<td>{record.pressure}</td>
 													</tr>
 													<tr>
 														<td>Cloud Cover</td>
-														<td>":record.weather.cloudCover:"</td>
+														<td>{record.cloudCover}</td>
 													</tr>
 													<tr>
 														<td>Visibility</td>
-														<td>":record.weather.visibility:"</td>
+														<td>{record.visibility}</td>
 													</tr>
 													<tr>
 														<td>Wind Gusts</td>
-														<td>":record.weather.gust:"</td>
+														<td>{record.gust}</td>
 													</tr>
 													<tr>
 														<td>Wind Direction</td>
-														<td>":record.weather.windDirection:"</td>
+														<td>{record.windDirection}</td>
 													</tr>
 													<tr>
 														<td>Wind Speed</td>
-														<td>":record.weather.windSpeed:"</td>
+														<td>{record.windSpeed}</td>
 													</tr>
 													<tr>
 														<td>Relative Humidity</td>
-														<td>":record.weather.humidity:"</td>
+														<td>{record.humidity}</td>
 													</tr>
 												</tbody>
 											</table>
@@ -208,15 +208,15 @@ const ShowTile = ({ record }) => {
 												<tbody>
 													<tr>
 														<td>Wave Direction</td>
-														<td></td>
+														<td>{record.waveDirection}</td>
 													</tr>
 													<tr>
 														<td>Wave Height</td>
-														<td></td>
+														<td>{record.waveHeight}</td>
 													</tr>
 													<tr>
 														<td>Wave Period</td>
-														<td></td>
+														<td>{record.wavePeriod}</td>
 													</tr>
 												</tbody>
 											</table>
@@ -228,15 +228,15 @@ const ShowTile = ({ record }) => {
 												<tbody>
 													<tr>
 														<td>Sea Level</td>
-														<td>":record.weather.seaLevel:"</td>
+														<td>{record.seaLevel}</td>
 													</tr>
 													<tr>
 														<td>Current Direction</td>
-														<td>":record.weather.currentDirection:"</td>
+														<td>{record.currentDirection}</td>
 													</tr>
 													<tr>
 														<td>Current Speed</td>
-														<td>":record.weather.currentSpeed:"</td>
+														<td>{record.currentSpeed}</td>
 													</tr>
 												</tbody>
 											</table>
@@ -247,20 +247,24 @@ const ShowTile = ({ record }) => {
 											<table className="table has-text-centered">
 												<tbody>
 													<tr>
-														<td>":record.tide.first_type:"</td>
-														<td>":record.tide.first_time:"</td>
+														<td>{record.first_type}</td>
+														<td>{record.first_height}</td>
+														<td>{record.first_time}</td>
 													</tr>
 													<tr>
-														<td>":record.tide.second_type:"</td>
-														<td>":record.tide.second_time:"</td>
+														<td>{record.second_type}</td>
+														<td>{record.second_height}</td>
+														<td>{record.second_time}</td>
 													</tr>
 													<tr>
-														<td>":record.tide.third_type:"</td>
-														<td>":record.tide.third_time:"</td>
+														<td>{record.third_type}</td>
+														<td>{record.third_height}</td>
+														<td>{record.third_time}</td>
 													</tr>
 													<tr>
-														<td>":record.tide.fourth_type:"</td>
-														<td>":record.tide.fourth_time:"</td>
+														<td>{record.fourth_type}</td>
+														<td>{record.fourth_height}</td>
+														<td>{record.fourth_time}</td>
 													</tr>
 												</tbody>
 											</table>

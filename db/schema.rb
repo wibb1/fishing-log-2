@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_20_193947) do
+ActiveRecord::Schema.define(version: 2020_08_23_135030) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,52 @@ ActiveRecord::Schema.define(version: 2020_08_20_193947) do
     t.text "time", null: false
     t.time "datetime", null: false
     t.float "js_date", null: false
+    t.text "airTemperature", default: "NA"
+    t.text "pressure", default: "NA"
+    t.text "cloudCover", default: "NA"
+    t.text "gust", default: "NA"
+    t.text "humidity", default: "NA"
+    t.text "visibility", default: "NA"
+    t.text "windDirection", default: "NA"
+    t.text "windSpeed", default: "NA"
+    t.text "currentDirection", default: "NA"
+    t.text "currentSpeed", default: "NA"
+    t.text "first_type", default: "NA"
+    t.text "first_time", default: "NA"
+    t.text "first_height", default: "NA"
+    t.text "second_type", default: "NA"
+    t.text "second_time", default: "NA"
+    t.text "second_height", default: "NA"
+    t.text "third_type", default: "NA"
+    t.text "third_time", default: "NA"
+    t.text "third_height", default: "NA"
+    t.text "fourth_type", default: "NA"
+    t.text "fourth_time", default: "NA"
+    t.text "fourth_height", default: "NA"
+    t.text "astronomicalDawn", default: "NA"
+    t.text "astronomicalDusk", default: "NA"
+    t.text "civilDawn", default: "NA"
+    t.text "civilDusk", default: "NA"
+    t.text "moonFraction", default: "NA"
+    t.text "moonPhase", default: "NA"
+    t.text "moonrise", default: "NA"
+    t.text "moonset", default: "NA"
+    t.text "sunrise", default: "NA"
+    t.text "sunset", default: "NA"
+    t.text "astro_time", default: "NA"
+    t.text "seaLevel", default: "NA"
+    t.text "swellDirection", default: "NA"
+    t.text "swellHeight", default: "NA"
+    t.text "swellPeriod", default: "NA"
+    t.text "secondarySwellDirection", default: "NA"
+    t.text "secondarySwellHeight", default: "NA"
+    t.text "secondarySwellPeriod", default: "NA"
+    t.text "waveDirection", default: "NA"
+    t.text "waveHeight", default: "NA"
+    t.text "wavePeriod", default: "NA"
+    t.text "windWaveDirection", default: "NA"
+    t.text "windWaveHeight", default: "NA"
+    t.text "windWavePeriod", default: "NA"
     t.index ["user_id"], name: "index_records_on_user_id"
   end
 
