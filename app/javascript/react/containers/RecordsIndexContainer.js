@@ -37,7 +37,7 @@ const RecordsIndexContainer = (props) => {
 				body={record.body}
 				latitude={record.latitude}
 				longitude={record.longitude}
-				date={record.date}
+				date={record.date.slice(0,16).replace("T"," ")}
 				time={record.time}			
 				first_type={record.first_type}
 				first_time={record.first_time}
