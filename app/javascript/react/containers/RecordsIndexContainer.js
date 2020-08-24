@@ -39,12 +39,32 @@ const RecordsIndexContainer = (props) => {
 				longitude={record.longitude}
 				date={record.date}
 				time={record.time}			
+				first_type={record.first_type}
+				first_time={record.first_time}
+				first_height={record.first_height}
+				second_type={record.second_type}
+				second_time={record.second_time}
+				second_height={record.second_height}
+				third_type={record.third_type}
+				third_time={record.third_time}
+				third_height={record.third_height}
+				fourth_type={record.fourth_type}
+				fourth_time={record.fourth_time}
+				fourth_height={record.fourth_height}
+				pressure={record.pressure}
+				humidity={record.humidity}
+				windDirection={record.windDirection}
+				windSpeed={record.windSpeed}
+				moonFraction={record.moonFraction}
+				moonPhase={record.moonPhase}
+				sunrise={record.sunrise}
+				sunset={record.sunset}
 			/>
 		);
 	});
 
 	return (
-		<div>
+		<div className="container">
 			<div className="">
 			<h1 className="title center m-md"> Your Spot List</h1>
 			</div>

@@ -1,7 +1,36 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const RecordTile = ({ id, name, success, body, latitude, longitude, date, time }) => {
+const RecordTile = ({
+	id,
+	name,
+	success,
+	body,
+	latitude,
+	longitude,
+	date,
+	time,
+	first_type,
+	first_time,
+	first_height,
+	second_type,
+	second_time,
+	second_height,
+	third_type,
+	third_time,
+	third_height,
+	fourth_type,
+	fourth_time,
+	fourth_height,
+	pressure,
+	humidity,
+	windDirection,
+	windSpeed,
+	moonFraction,
+	moonPhase,
+	sunrise,
+	sunset
+}) => {
 	const success_color = (success) => {
 		let success_color;
 		if (success === 'Good') {
@@ -25,21 +54,23 @@ const RecordTile = ({ id, name, success, body, latitude, longitude, date, time }
 									</div>
 									<div className="column is-vcentered">
 										<div className="subtitle is-size-3 is-size-4-touch">
-											<p className="has-text-right">{date} {time}</p>
+											<p className="has-text-right">
+												{date} {time}
+											</p>
 										</div>
 									</div>
 								</div>
 							</div>
-						<div className="columns">
-							<div className="column">
-								<div className="box">
-									<p className="subtitle is-size-4 is-5-touch has-text-weight-b">
-										<strong className="">Whats on the menu:</strong> ":species:"
-									</p>
+							<div className="columns">
+								<div className="column">
+									<div className="box">
+										<p className="subtitle is-size-4 is-5-touch has-text-weight-b">
+											<strong className="">Whats on the menu:</strong> ":species:"
+										</p>
+									</div>
 								</div>
+								<hr />
 							</div>
-							<hr />
-						</div>
 							<div className="box">
 								<p className="is-6">{body}</p>
 							</div>
@@ -49,24 +80,29 @@ const RecordTile = ({ id, name, success, body, latitude, longitude, date, time }
 										<table className="table has-text-centered center">
 											<tbody>
 												<tr>
+													<th>Tide</th>
 													<th>Tide Time</th>
 													<th>Tide Height(aMSL)</th>
 												</tr>
 												<tr>
-													<td>":firstTime:"</td>
-													<td>":firstType:" </td>
+													<td>{first_type}</td>
+													<td>{first_time}</td>
+													<td>{first_type} </td>
 												</tr>
 												<tr>
-													<td>":secondTime:"</td>
-													<td>":secondType:"</td>
+													<td>{second_type}</td>
+													<td>{second_time}</td>
+													<td>{second_type}</td>
 												</tr>
 												<tr>
-													<td>":thirdTime:"</td>
-													<td>":thirdType:"</td>
+													<td>{third_type}</td>
+													<td>{third_time}</td>
+													<td>{third_type}</td>
 												</tr>
 												<tr>
-													<td>":fourthTime:"</td>
-													<td>":fourthType:"</td>
+													<td>{fourth_type}</td>
+													<td>{fourth_time}</td>
+													<td>{fourth_type}</td>
 												</tr>
 											</tbody>
 										</table>
@@ -83,23 +119,23 @@ const RecordTile = ({ id, name, success, body, latitude, longitude, date, time }
 												</tr>
 												<tr>
 													<td>Pressure</td>
-													<td>(in):</td>
-													<td>":pressure:"</td>
+													<td>(inHg):</td>
+													<td>{pressure}</td>
 												</tr>
 												<tr>
 													<td>Humidity</td>
 													<td>(%):</td>
-													<td>":humidity:"</td>
+													<td>{humidity}</td>
 												</tr>
 												<tr>
 													<td>Wind Direction </td>
 													<td>(degrees): </td>
-													<td>":windDirection:"</td>
+													<td>{windDirection}</td>
 												</tr>
 												<tr>
 													<td>Wind Speed </td>
 													<td>(mph): </td>
-													<td>":windSpeed:"</td>
+													<td>{windSpeed}</td>
 												</tr>
 											</tbody>
 										</table>
@@ -115,19 +151,19 @@ const RecordTile = ({ id, name, success, body, latitude, longitude, date, time }
 												</tr>
 												<tr>
 													<td>Moon Fraction</td>
-													<td>":moonFraction:"</td>
+													<td>{moonFraction}</td>
 												</tr>
 												<tr>
 													<td>Moon Phase</td>
-													<td>":moonPhase:"</td>
+													<td>{moonPhase}</td>
 												</tr>
 												<tr>
 													<td>Sunrise</td>
-													<td>":sunrise:"</td>
+													<td>{sunrise}</td>
 												</tr>
 												<tr>
 													<td>Sunset</td>
-													<td>":sunset:"</td>
+													<td>{sunset}</td>
 												</tr>
 											</tbody>
 										</table>
