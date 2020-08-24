@@ -74,7 +74,7 @@ require 'faraday'
 
     weather_url = "weather/point?lat=#{@record_new.latitude}&lng=#{@record_new.longitude}&start=#{start_time}&end=#{end_DateTime_hour}&source=#{"sg"}&params=#{weather_request}"
     parsed_response = faraday_request(weather_url)
-
+binding.pry
     data = parsed_response["hours"][0]
 
     @record_new.airTemperature = ((data["airTemperature"]["sg"])*9/5+32).round(0).to_s
