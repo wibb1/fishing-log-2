@@ -14,7 +14,7 @@ require 'faraday'
   def update
     @record = Record.find(params[:id])
     if @record.update(update_params)
-      redirect_to "/records/react/#{update_params[:id]}"
+      redirect_to "/records/react/#{@record.id}"
     else
       render 'edit'
     end
