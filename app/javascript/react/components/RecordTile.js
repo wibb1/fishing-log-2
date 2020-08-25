@@ -46,7 +46,7 @@ const RecordTile = ({
 			<div className="tile is-vertical">
 				<div className="tile is-parent">
 					<Link to={`/records/react/${id}`}>
-						<div className={`tile is-child notification ${success_color(success)}`}>
+						<div className={`tile is-child notification ${success_color(success)} is-12`}>
 							<div className="box">
 								<div className="columns">
 									<div className="column">
@@ -55,7 +55,7 @@ const RecordTile = ({
 									<div className="column is-vcentered">
 										<div className="subtitle is-size-3 is-size-4-touch">
 											<p className="has-text-right">
-												{date} {time}
+												{date}
 											</p>
 										</div>
 									</div>
@@ -81,28 +81,28 @@ const RecordTile = ({
 											<tbody>
 												<tr>
 													<th>Tide</th>
-													<th>Tide Time</th>
-													<th>Tide Height(aMSL)</th>
+													<th>Time</th>
+													<th>aMSL</th>
 												</tr>
 												<tr>
 													<td>{first_type}</td>
 													<td>{first_time}</td>
-													<td>{first_type} </td>
+													<td>{first_height} </td>
 												</tr>
 												<tr>
 													<td>{second_type}</td>
 													<td>{second_time}</td>
-													<td>{second_type}</td>
+													<td>{second_height}</td>
 												</tr>
 												<tr>
 													<td>{third_type}</td>
 													<td>{third_time}</td>
-													<td>{third_type}</td>
+													<td>{third_height}</td>
 												</tr>
 												<tr>
 													<td>{fourth_type}</td>
 													<td>{fourth_time}</td>
-													<td>{fourth_type}</td>
+													<td>{fourth_height}</td>
 												</tr>
 											</tbody>
 										</table>

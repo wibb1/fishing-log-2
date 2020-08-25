@@ -1,7 +1,17 @@
-<p>Hello <%= @resource.email %>!</p>
+<section class="hero">
+  <div class="hero-body">
+    <div class="container">
+      <h1>Hello <%= @resource.email %>!</h1>
+    </div>
+  </div>
 
-<p>Your account has been locked due to an excessive number of unsuccessful sign in attempts.</p>
+  <container class="m-lg p-lg">
 
-<p>Click the link below to unlock your account:</p>
+    <p>Your account has been locked due to an excessive number of unsuccessful sign in attempts.</p>
 
-<p><%= link_to 'Unlock my account', unlock_url(@resource, unlock_token: @token) %></p>
+    <p>Click the link below to unlock your account:</p>
+
+    <p><%= link_to 'Unlock my account', unlock_url(@resource, unlock_token: @token) %></p>
+
+  </container>
+ </section>
