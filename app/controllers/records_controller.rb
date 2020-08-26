@@ -7,6 +7,24 @@ require 'faraday'
     @record_new.user = current_user
   end
 
+  def edit 
+    @record = Record.find(params[:id])
+  end
+
+  def update
+    @record = Record.find(params[:id])
+    if @record.update(update_params)
+      redirect_to "/records/react/#{@record.id}"
+    else
+      render 'edit'
+    end
+  end
+
+  def destroy
+    Record.destroy(params[:id])
+    redirect_to '/records/react'
+  end
+
   def create
     time = Time.local(create_params["datetime(1i)"], create_params["datetime(2i)"], create_params["datetime(3i)"], create_params["datetime(4i)"], create_params["datetime(5i)"])
 
@@ -34,7 +52,7 @@ require 'faraday'
     puts @record_new.js_date
     puts "--------------------"
 
-    ####################################  
+    ################Future helper################
 
     parsed_time = Time.parse(@record_new.date)
     start_time = parsed_time.getutc.to_s
@@ -49,7 +67,7 @@ require 'faraday'
     puts end_day
     puts "--------------------"
 
-    ####################################
+    ################################
 
     create_weather(start_time, end_DateTime_hour)
     create_tide(start_day, end_day)
@@ -67,7 +85,7 @@ require 'faraday'
     end
   end
 
-  ####################################
+    ################Future PORO################
 
   def create_weather(start_time, end_DateTime_hour)
     weather_request = 'airTemperature,pressure,cloudCover,currentDirection,currentSpeed,gust,humidity,seaLevel,visibility,windDirection,windSpeed'
@@ -103,7 +121,8 @@ require 'faraday'
 
   end
 
-  ####################################
+      ################################
+    ################Future PORO################
 
   def create_tide(start_time, end_DateTime_day)
     tide_url="tide/extremes/point?lat=#{@record_new.latitude}&lng=#{@record_new.longitude}&start=#{start_time}&end=#{end_DateTime_day}"
@@ -136,7 +155,8 @@ require 'faraday'
     puts "--------------------"
   end
 
-  ####################################
+      ################################
+    ################Future PORO################
 
   def create_astro(start_time, end_DateTime_day)
     astro_request = "astronomicalDawn,astronomicalDusk,civilDawn,civilDusk,moonFraction,moonPhase,moonrise,moonset,sunrise,sunset,time"
@@ -170,7 +190,8 @@ require 'faraday'
     puts "--------------------"
   end
 
-  ####################################
+      ################################
+    ################Future PORO################
 
   def create_waves(start_date, end_DateTime_day)
     wave_request = 'seaLevel,swellDirection,swellHeight,swellPeriod,secondarySwellDirection,secondarySwellHeight,secondarySwellPeriod,waveDirection,waveHeight,wavePeriod,windWaveDirection,windWaveHeight,windWavePeriod'
@@ -210,7 +231,8 @@ require 'faraday'
     puts "--------------------"
   end
 
-  ####################################
+      ################################
+    ################Future PORO################
 
   def faraday_request(url)
     api_key = ENV['STORMGLASS_API_KEY']
@@ -226,5 +248,9 @@ require 'faraday'
 
   def create_params
     params.require(:record).permit(:name, :success, :body, :latitude, :longitude, :datetime)
+  end
+
+  def update_params
+    params.require(:record).permit(:name, :success, :body)
   end
 end
