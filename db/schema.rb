@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_31_185709) do
+ActiveRecord::Schema.define(version: 2020_08_31_201205) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,6 +75,14 @@ ActiveRecord::Schema.define(version: 2020_08_31_185709) do
     t.text "windWaveHeight", default: "NA"
     t.text "windWavePeriod", default: "NA"
     t.index ["user_id"], name: "index_records_on_user_id"
+  end
+
+  create_table "species", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "water_column", null: false
+    t.string "legal_size", null: false
+    t.string "legal_size_slot", default: "NA", null: false
+    t.string "legal_size_super", default: "NA", null: false
   end
 
   create_table "users", force: :cascade do |t|

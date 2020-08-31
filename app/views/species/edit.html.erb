@@ -1,0 +1,56 @@
+<section class="hero">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">Edit Species</h1>
+    </div>
+  </div>
+</section>
+
+<div class="section-indent m-md">
+  <div class="container has-text-dark">
+  <%= form_for(@species_new) do |f| %>
+   
+      <div class="field">
+        <%= f.label :name, :class => "label" %>
+        <div class="control">
+          <%= f.text_field :name, placeholder: "Name", :class => "input", :required => true %>
+        </div>
+      </div>
+
+      <div class="field">
+        <%= f.label :water_column, :class => "label" %>
+        <div class="control">
+          <div class="select">
+            <%= f.select :water_column, ["Upper", "Middle", "Lower", "All"], :prompt => "Select One", :required => true %>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <%= f.label :legal_size, :class => "label" %>
+        <div class="control">
+          <%= f.text_field :legal_size, placeholder: "Legal Size (inches)", :class => "input" %>
+        </div>
+      </div>
+
+      <div class="field">
+        <%= f.label :legal_size_slot, :class => "label" %>
+        <div class="control">
+          <%= f.text_field :legal_size_slot, step: :any, placeholder: "Slot Upper Limit (inches)", :class => "input", :required => true %>
+        </div>
+      </div>
+
+      <div class="field">
+        <%= f.label :legal_size_super, :class => "label" %>
+        <div class="control">
+          <%= f.text_field :legal_size_super, step: :any, placeholder: "Trophy Limit (inches)", :class => "input", :required => true %>
+        </div>
+      </div>
+
+      <div class="field">
+        <%= f.submit "Submit", :class =>"button is-primary has-text-weight-bold" %>
+      </div>
+
+    <% end %>
+  </div>
+</div>

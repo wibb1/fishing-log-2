@@ -2,6 +2,8 @@ class RecordsController < ApplicationController
 require 'date'
 require 'faraday'
 
+before_action :authenticate_user!
+
   def new
     @record_new = Record.new()
     @record_new.user = current_user

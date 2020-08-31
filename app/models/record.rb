@@ -54,4 +54,5 @@ class Record < ApplicationRecord
   validates :currentSpeed, presence: true
 
   belongs_to :user
+  has_many :species
 end
