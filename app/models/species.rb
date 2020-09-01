@@ -7,6 +7,5 @@ class Species < ApplicationRecord
   validates :legal_size_super, presence: true 
 
   has_and_beongs_to_many :records
-  
 end
 

@@ -12,6 +12,6 @@ class ApplicationController < ActionController::Base
 
   def authenticate_admin!
     authenticate_user!
-    redirect_to :new_session_path(resource_name) , status: :forbidden unless current_user.admin?
+    redirect_to :new_session_path, status: :forbidden unless current_user.admin?
   end
 end

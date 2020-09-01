@@ -26,6 +26,15 @@
       </div>
 
       <div class="field">
+        <%= f.label :species_id, "What species of fish?"%>
+        <div class="control">
+          <div class="select">
+            <%= f.select :species_id, Species.all.map{|c| [c.name, c.id]}, :prompt => "Select One" %>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
         <%= f.label :body, "Spot Description", :class => "label" %>
         <div class="control">
           <%= f.text_area :body, placeholder: "Description", :class => "textarea" %>

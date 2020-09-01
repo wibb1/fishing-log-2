@@ -96,7 +96,7 @@ before_action :authenticate_user!
     parsed_response = faraday_request(weather_url)
 
     data = parsed_response["hours"][0]
-
+binding.pry
     @record_new.airTemperature = ((data["airTemperature"]["sg"])*9/5+32).round(0).to_s
     @record_new.pressure = (data["pressure"]["sg"]*0.03).round(2).to_s
     @record_new.cloudCover = (data["cloudCover"]["sg"]).round(2).to_s
@@ -105,9 +105,10 @@ before_action :authenticate_user!
     @record_new.visibility = ((data["visibility"]["sg"])*0.621371).round(2).to_s
     @record_new.windDirection = data["windDirection"]["sg"].to_s
     @record_new.windSpeed = (data["windSpeed"]["sg"]*2.237).round(2).to_s
-    @record_new.currentDirection = data["currentDirection"]["sg"].to_s
-    @record_new.currentSpeed = (data["currentSpeed"]["sg"]*2.237).round(2).to_s
-
+    if data.include?("current")
+      @record_new.currentDirection = data["currentDirection"]["sg"].to_s
+      @record_new.currentSpeed = (data["currentSpeed"]["sg"]*2.237).round(2).to_s
+    end
     puts "--------------------"
     puts "Air Temperature: #{@record_new.airTemperature}"
     puts "pressure: #{@record_new.pressure}"
