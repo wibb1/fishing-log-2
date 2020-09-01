@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_31_201205) do
+ActiveRecord::Schema.define(version: 2020_08_31_202838) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -77,8 +77,16 @@ ActiveRecord::Schema.define(version: 2020_08_31_201205) do
     t.index ["user_id"], name: "index_records_on_user_id"
   end
 
+  create_table "records_species", id: false, force: :cascade do |t|
+    t.bigint "species_id", null: false
+    t.bigint "record_id", null: false
+    t.index ["record_id", "species_id"], name: "index_records_species_on_record_id_and_species_id"
+    t.index ["species_id", "record_id"], name: "index_records_species_on_species_id_and_record_id"
+  end
+
   create_table "species", force: :cascade do |t|
-    t.string "name", null: false
+    t.string "common_name", null: false
+    t.string "scientific_name", null: false
     t.string "water_column", null: false
     t.string "legal_size", null: false
     t.string "legal_size_slot", default: "NA", null: false

@@ -40,7 +40,7 @@ class SpeciesController < ApplicationController
   private
 
   def create_params
-    params.require(:species).permit(:name, :water_column, :legal_size, :legal_size_slot, :legal_size_super)
+    params.require(:species).permit(:common_name,:scientific_name, :water_column, :legal_size, :legal_size_slot, :legal_size_super)
   end
 
 end
