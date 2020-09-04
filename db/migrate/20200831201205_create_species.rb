@@ -5,8 +5,9 @@ class CreateSpecies < ActiveRecord::Migration[5.2]
       t.string :scientific_name, null: false
       t.string :water_column, null: false
       t.string :legal_size, null: false
-      t.string :legal_size_slot, null: false, default: "NA"
-      t.string :legal_size_super, null: false, default: "NA"
+      t.string :season_dates, null: false, default: "NA"
+      t.string :bag_limits, null: false, default: "NA"
+
     end
   end
 end

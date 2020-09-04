@@ -91,6 +91,14 @@ ActiveRecord::Schema.define(version: 2020_08_31_202838) do
     t.string "legal_size", null: false
     t.string "legal_size_slot", default: "NA", null: false
     t.string "legal_size_super", default: "NA", null: false
+    t.string "winter_season_start", default: "NA", null: false
+    t.string "spring_season_start", default: "NA", null: false
+    t.string "summer_season_start", default: "NA", null: false
+    t.string "fall_season_start", default: "NA", null: false
+    t.string "winter_bag_limit", default: "NA", null: false
+    t.string "spring_bag_limit", default: "NA", null: false
+    t.string "summer_bag_limit", default: "NA", null: false
+    t.string "fall_bag_limit", default: "NA", null: false
   end
 
   create_table "users", force: :cascade do |t|
