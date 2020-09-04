@@ -12,7 +12,7 @@ Check out the deployed app https://fishing-log-2.herokuapp.com/
 
 ### APIs
 
-To run the app you will need to sign up for a code at Stormglass.io and input that into the .ENV file (see example file to see the format)
+To run the app locally you will need to sign up for a code at Stormglass.io and input that into the .ENV file (see example file to see the format).  On Heroku this is not required.
 
 ### Libraries
 * devise
