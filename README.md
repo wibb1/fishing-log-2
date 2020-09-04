@@ -22,7 +22,7 @@ To run the app locally you will need to sign up for a code at Stormglass.io and 
 
 I have begun incorporating a species class that can be indicated on the form which will allow sorting in the future using a specific species show page.
 
-I would like to add searching features to the show page to allow users to quickly search and filter their records on their show page to show only records with the given key words.
+I would like to add searching features to the show page to allow users to quickly search and filter their records to show only records with the given key words.
 
 I plan to add shared records and a review/help section for fishermen to help one another.  I have begun incorporating an administrator function to provide regulation of this to ensure that improper posts can be removed.  I have also begun composing rules for public posts to provide guidance to users to ensure users know what is acceptable.
 
