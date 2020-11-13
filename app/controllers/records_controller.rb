@@ -39,36 +39,14 @@ require 'faraday'
     @record_new.time = time.strftime("%H:%M")
     @record_new.js_date = time.to_f * 1000
     @record_new.user = current_user
-
-    puts "--------------------"
-    puts @record_new.name
-    puts @record_new.success
-    puts @record_new.body
-    puts @record_new.latitude
-    puts @record_new.longitude
-    puts @record_new.datetime.inspect
-    puts @record_new.date
-    puts @record_new.time
-    puts @record_new.js_date
-    puts "--------------------"
-
     ################Future helper################
-
     parsed_time = Time.parse(@record_new.date)
     start_time = parsed_time.getutc.to_s
     end_DateTime_hour = parsed_time.advance(hours: 1).getutc.to_s
     end_DateTime_day = parsed_time.advance(days: 1).getutc.to_s
     start_day = parsed_time.beginning_of_day.getutc.to_s
     end_day = parsed_time.end_of_day.getutc.to_s
-    puts "--------------------"
-    puts start_time
-    puts end_DateTime_hour
-    puts start_day
-    puts end_day
-    puts "--------------------"
-
-    ################################
-
+    
     create_weather(start_time, end_DateTime_hour)
     create_tide(start_day, end_day)
     create_astro(start_day, end_day)
@@ -84,9 +62,7 @@ require 'faraday'
       render 'new'
     end
   end
-
     ################Future PORO################
-
   def create_weather(start_time, end_DateTime_hour)
     weather_request = 'airTemperature,pressure,cloudCover,currentDirection,currentSpeed,gust,humidity,seaLevel,visibility,windDirection,windSpeed'
 
@@ -98,101 +74,60 @@ require 'faraday'
     @record_new.airTemperature = ((data["airTemperature"]["sg"])*9/5+32).round(0).to_s
     @record_new.pressure = (data["pressure"]["sg"]*0.03).round(2).to_s
     @record_new.cloudCover = (data["cloudCover"]["sg"]).round(2).to_s
-    @record_new.gust = (data["gust"]["sg"]*2.237).round(2).to_s
+    @record_new.gust = mps_to_mph(data["gust"]["sg"])
     @record_new.humidity = data["humidity"]["sg"].to_s
     @record_new.visibility = ((data["visibility"]["sg"])*0.621371).round(2).to_s
     @record_new.windDirection = data["windDirection"]["sg"].to_s
-    @record_new.windSpeed = (data["windSpeed"]["sg"]*2.237).round(2).to_s
+    @record_new.windSpeed = mps_to_mph(data["windSpeed"]["sg"])
     @record_new.currentDirection = data["currentDirection"]["sg"].to_s
-    @record_new.currentSpeed = (data["currentSpeed"]["sg"]*2.237).round(2).to_s
-
-    puts "--------------------"
-    puts "Air Temperature: #{@record_new.airTemperature}"
-    puts "pressure: #{@record_new.pressure}"
-    puts "cloudCover: #{@record_new.cloudCover}"
-    puts "gust: #{@record_new.gust}"
-    puts "humidity: #{@record_new.humidity}"
-    puts "visibility: #{@record_new.visibility}"
-    puts "windDirection: #{@record_new.windDirection}"
-    puts "windSpeed: #{@record_new.windSpeed}"
-    puts "currentDirection: #{@record_new.currentDirection}"
-    puts "currentSpeed: #{@record_new.currentSpeed}"
-    puts "--------------------"
-
+    @record_new.currentSpeed = mps_to_mph(data["currentSpeed"]["sg"])
   end
-
-      ################################
     ################Future PORO################
-
   def create_tide(start_time, end_DateTime_day)
     tide_url="tide/extremes/point?lat=#{@record_new.latitude}&lng=#{@record_new.longitude}&start=#{start_time}&end=#{end_DateTime_day}"
     parsed_response = faraday_request(tide_url)
     tide_data = parsed_response["data"]
     @record_new.first_type = tide_data[0]["type"]
-    @record_new.first_height = (tide_data[0]["height"]*3.28).round(2).to_s
-    @record_new.first_time = (DateTime.strptime(tide_data[0]["time"], "%Y-%m-%dT%H:%M:%S%z").localtime).strftime("%m-%d-%Y %H:%M")
+    @record_new.first_height = m_to_ft(tide_data[0]["height"])
+    @record_new.first_time = format_time(tide_data[0]["time"])
     @record_new.second_type = tide_data[1]["type"]
-    @record_new.second_time = (DateTime.strptime(tide_data[1]["time"], "%Y-%m-%dT%H:%M:%S%z").localtime).strftime("%m-%d-%Y %H:%M")
-    @record_new.second_height = (tide_data[1]["height"]*3.28).round(2).to_s
+    @record_new.second_time = format_time(tide_data[1]["time"])
+    @record_new.second_height = m_to_ft(tide_data[1]["height"])
     @record_new.third_type = tide_data[2]["type"]
-    @record_new.third_time = (DateTime.strptime(tide_data[2]["time"], "%Y-%m-%dT%H:%M:%S%z").localtime).strftime("%m-%d-%Y %H:%M")
-    @record_new.third_height = (tide_data[2]["height"]*3.28).round(2).to_s
+    @record_new.third_time = format_time(tide_data[2]["time"])
+    @record_new.third_height = m_to_ft(tide_data[2]["height"])
 
     if tide_data[3]
       @record_new.fourth_type = tide_data[3]["type"]
-      @record_new.fourth_time = (DateTime.strptime(tide_data[3]["time"], "%Y-%m-%dT%H:%M:%S%z").localtime).strftime("%m-%d-%Y %H:%M")
-      @record_new.fourth_height = (tide_data[3]["height"]*3.28).round(2).to_s
+      @record_new.fourth_time = format_time(tide_data[3]["time"])
+      @record_new.fourth_height = m_to_ft(tide_data[3]["height"])
     else
       @record_new.fourth_type = "NA"
       @record_new.fourth_time = "NA"
       @record_new.fourth_height = "NA"
     end
-    puts "--------------------"
-    puts "#{@record_new.first_type}  #{@record_new.first_height}  #{@record_new.first_time}"
-    puts "#{@record_new.second_type}  #{@record_new.second_height}  #{@record_new.second_time}"
-    puts "#{@record_new.third_type}  #{@record_new.third_height}  #{@record_new.third_time}"
-    puts "#{@record_new.fourth_type}  #{@record_new.fourth_height}  #{@record_new.fourth_time}"
-    puts "--------------------"
   end
-
-      ################################
     ################Future PORO################
-
   def create_astro(start_time, end_DateTime_day)
     astro_request = "astronomicalDawn,astronomicalDusk,civilDawn,civilDusk,moonFraction,moonPhase,moonrise,moonset,sunrise,sunset,time"
     astro_url="astronomy/point?lat=#{@record_new.latitude}&lng=#{@record_new.longitude}&start=#{start_time}&end=#{end_DateTime_day}&params=#{astro_request}"
     parsed_response = faraday_request(astro_url)
     astro_data = parsed_response["data"]
 
-    @record_new.astronomicalDawn = (DateTime.strptime(astro_data[0]["astronomicalDawn"], "%Y-%m-%dT%H:%M:%S%z").localtime).strftime("%m-%d-%Y %H:%M")
-    @record_new.astronomicalDusk = (DateTime.strptime(astro_data[0]["astronomicalDusk"], "%Y-%m-%dT%H:%M:%S%z").localtime).strftime("%m-%d-%Y %H:%M")
-    @record_new.civilDawn = (DateTime.strptime(astro_data[0]["civilDawn"], "%Y-%m-%dT%H:%M:%S%z").localtime).strftime("%m-%d-%Y %H:%M")
-    @record_new.civilDusk = (DateTime.strptime(astro_data[0]["civilDusk"], "%Y-%m-%dT%H:%M:%S%z").localtime).strftime("%m-%d-%Y %H:%M")
+    @record_new.astronomicalDawn = format_time(astro_data[0]["astronomicalDawn"])
+    @record_new.astronomicalDusk = format_time(astro_data[0]["astronomicalDusk"])
+    @record_new.civilDawn = format_time(astro_data[0]["civilDawn"])
+    @record_new.civilDusk = format_time(astro_data[0]["civilDusk"])
     @record_new.moonFraction = (astro_data[0]["moonFraction"]).round(2).to_s
     @record_new.moonPhase = astro_data[0]["moonPhase"]["closest"]["text"].to_s
-    @record_new.moonrise = (DateTime.strptime(astro_data[0]["moonrise"], "%Y-%m-%dT%H:%M:%S%z").localtime).strftime("%m-%d-%Y %H:%M")
-    @record_new.moonset = (DateTime.strptime(astro_data[0]["moonset"], "%Y-%m-%dT%H:%M:%S%z").localtime).strftime("%m-%d-%Y %H:%M")
-    @record_new.sunrise = (DateTime.strptime(astro_data[0]["sunrise"], "%Y-%m-%dT%H:%M:%S%z").localtime).strftime("%m-%d-%Y %H:%M")
-    @record_new.sunset = (DateTime.strptime(astro_data[0]["sunset"], "%Y-%m-%dT%H:%M:%S%z").localtime).strftime("%m-%d-%Y %H:%M")
-    @record_new.astro_time = (DateTime.strptime(astro_data[0]["time"], "%Y-%m-%dT%H:%M:%S%z").localtime).strftime("%m-%d-%Y %H:%M")
-    puts "--------------------"
-    puts "First Light #{@record_new.astronomicalDawn}"
-    puts "Last Light #{@record_new.astronomicalDusk}"
-    puts "Civil Dawn #{@record_new.civilDawn}"
-    puts "Civil Dusk #{@record_new.civilDusk}"
-    puts "Moon Fraction #{@record_new.moonFraction}"
-    puts "Moon Phase #{@record_new.moonPhase}"
-    puts "Moon Rise #{@record_new.moonrise}"
-    puts "Moon Set #{@record_new.moonset}"
-    puts "Sunrise #{@record_new.sunrise}"
-    puts "Sunset #{@record_new.sunset}"
-    puts "Time #{@record_new.time}"
-    puts "--------------------"
+    @record_new.moonrise = format_time(astro_data[0]["moonrise"])
+    @record_new.moonset = format_time(astro_data[0]["moonset"])
+    @record_new.sunrise = format_time(astro_data[0]["sunrise"])
+    @record_new.sunset = format_time(astro_data[0]["sunset"])
+    @record_new.astro_time = format_time(astro_data[0]["time"])
+
   end
-
-      ################################
     ################Future PORO################
-
   def create_waves(start_date, end_DateTime_day)
     wave_request = 'seaLevel,swellDirection,swellHeight,swellPeriod,secondarySwellDirection,secondarySwellHeight,secondarySwellPeriod,waveDirection,waveHeight,wavePeriod,windWaveDirection,windWaveHeight,windWavePeriod'
 
@@ -200,40 +135,21 @@ require 'faraday'
     parsed_response = faraday_request(wave_url)
     data = parsed_response["hours"][0]
     
-    @record_new.seaLevel=(data["seaLevel"]["sg"]*3.28).round(2).to_s
+    @record_new.seaLevel=m_to_ft(data["seaLevel"]["sg"])
     @record_new.swellDirection=data["swellDirection"]["sg"].to_s
-    @record_new.swellHeight=(data["swellHeight"]["sg"]*3.28).round(2).to_s
+    @record_new.swellHeight=m_to_ft(data["swellHeight"]["sg"])
     @record_new.swellPeriod=data["swellPeriod"]["sg"].to_s
     @record_new.secondarySwellDirection=data["secondarySwellDirection"]["sg"].to_s
-    @record_new.secondarySwellHeight=(data["secondarySwellHeight"]["sg"]*3.28).round(2).to_s
+    @record_new.secondarySwellHeight=m_to_ft(data["secondarySwellHeight"]["sg"])
     @record_new.secondarySwellPeriod=data["secondarySwellPeriod"]["sg"].to_s
     @record_new.waveDirection=data["waveDirection"]["sg"].to_s
-    @record_new.waveHeight=(data["waveHeight"]["sg"]*3.28).round(2).to_s
+    @record_new.waveHeight=m_to_ft(data["waveHeight"]["sg"])
     @record_new.wavePeriod=data["wavePeriod"]["sg"].to_s
     @record_new.windWaveDirection=data["windWaveDirection"]["sg"].to_s
-    @record_new.windWaveHeight=(data["windWaveHeight"]["sg"]*3.28).round(2).to_s
-    @record_new.windWavePeriod=(data["windWavePeriod"]["sg"]*3.28).round(2).to_s
-
-    puts "--------------------"
-    puts "seaLevel #{@record_new.seaLevel}"
-    puts "swellDirection #{@record_new.swellDirection}"
-    puts "swellHeight #{@record_new.swellHeight}"
-    puts "swellPeriod #{@record_new.swellPeriod}"
-    puts "secondarySwellDirection #{@record_new.secondarySwellDirection}"
-    puts "secondarySwellHeight #{@record_new.secondarySwellHeight}"
-    puts "secondarySwellPeriod #{@record_new.secondarySwellPeriod}"
-    puts "waveDirection #{@record_new.waveDirection}"
-    puts "waveHeight #{@record_new.waveHeight}"
-    puts "wavePeriod #{@record_new.wavePeriod}"
-    puts "windWaveDirection #{@record_new.windWaveDirection}"
-    puts "windWaveHeight #{@record_new.windWaveHeight}"
-    puts "windWavePeriod #{@record_new.windWavePeriod}"
-    puts "--------------------"
+    @record_new.windWaveHeight=m_to_ft(data["windWaveHeight"]["sg"])
+    @record_new.windWavePeriod=m_to_ft(data["windWavePeriod"]["sg"])
   end
-
-      ################################
     ################Future PORO################
-
   def faraday_request(url)
     api_key = ENV['STORMGLASS_API_KEY']
 
@@ -242,6 +158,18 @@ require 'faraday'
     end
     parsed_response = JSON.parse(response.body)
     return parsed_response
+  end
+
+  def m_to_ft(number)
+    return (number*3.28).round(2).to_s
+  end
+
+  def format_time(time)
+    return (DateTime.strptime(time, "%Y-%m-%dT%H:%M:%S%z").localtime).strftime("%m-%d-%Y %H:%M")
+  end
+
+  def mps_to_mph(speed)
+    return (speed*2.237).round(2).to_s
   end
 
   private
