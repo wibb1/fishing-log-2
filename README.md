@@ -1,6 +1,6 @@
 # README
 
-[![Codeship Status for wibb1/fishing-log-2]https://app.codeship.com/projects/5f3875b0-c48c-0138-8f48-5a8e9e597d9b/status?branch=master
+[![Codeship Status for wibb1/fishing-log-2](https://app.codeship.com/projects/5f3875b0-c48c-0138-8f48-5a8e9e597d9b/status?branch=master)](https://app.codeship.com/projects/406489)
 
 When the fisherman has time, after taking care of the honey-do-list that is always waiting after a day on the water, they can enter the date and some simple descriptive information then walk away.  When they complete their entry the information for the trip will be entered and the API requests for the weather, tides and moon data will be gathered with no effort.  Not only that but past information that you might have around but that doesn’t have all the weather data can be entered and the information updated with all the weather data that is available (not all information is available for all past dates due to sunsetting certain information).
 
