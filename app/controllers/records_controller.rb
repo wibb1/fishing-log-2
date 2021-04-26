@@ -1,6 +1,7 @@
 class RecordsController < ApplicationController
 require 'date'
 require 'faraday'
+require './lib/apis/get_external_api.rb'
 
   def new
     @record_new = Record.new()
@@ -67,6 +68,8 @@ require 'faraday'
     weather_request = 'airTemperature,pressure,cloudCover,currentDirection,currentSpeed,gust,humidity,seaLevel,visibility,windDirection,windSpeed'
 
     weather_url = "weather/point?lat=#{@record_new.latitude}&lng=#{@record_new.longitude}&start=#{start_time}&end=#{end_DateTime_hour}&source=#{"sg"}&params=#{weather_request}"
+
+    stormglass_api_client = Apis::StormglassApi::V2::Client.new(ENV['STORMGLASS_API_KEY'])
     parsed_response = faraday_request(weather_url)
 
     data = parsed_response["hours"][0]
@@ -150,15 +153,15 @@ require 'faraday'
     @record_new.windWavePeriod=m_to_ft(data["windWavePeriod"]["sg"])
   end
     ################Future PORO################
-  def faraday_request(url)
-    api_key = ENV['STORMGLASS_API_KEY']
+  # def faraday_request(url)
+  #   api_key = ENV['STORMGLASS_API_KEY']
 
-    response = Faraday.get("https://api.stormglass.io/v2/#{url}") do |req|
-      req.headers["Authorization"] = api_key
-    end
-    parsed_response = JSON.parse(response.body)
-    return parsed_response
-  end
+  #   response = Faraday.get("https://api.stormglass.io/v2/#{url}") do |req|
+  #     req.headers["Authorization"] = api_key
+  #   end
+  #   parsed_response = JSON.parse(response.body)
+  #   return parsed_response
+  # end
 
   def m_to_ft(number)
     return (number*3.28).round(2).to_s
