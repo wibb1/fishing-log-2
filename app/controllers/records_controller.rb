@@ -48,7 +48,7 @@ require './lib/apis/get_external_api.rb'
     # start_day = parsed_time.beginning_of_day.getutc.to_s
     # end_day = parsed_time.end_of_day.getutc.to_s
     
-    stormglass_client = Apis::StormglassApi::V2::Client.new(ENV['STORMGLASS_API_KEY'])
+    stormglass_client = Apis::StormglassApi::V2::Client.new(ENV['STORMGLASS_API_KEY'], parsed_time, @record_new.latitude, @record_new.longitude)
     # create_weather(stormglass_client, start_time, end_DateTime_hour)
     # create_tide(stormglass_client, start_day, end_day)
     # create_astro(stormglass_client, start_day, end_day)
@@ -71,7 +71,7 @@ require './lib/apis/get_external_api.rb'
   def create_weather(stormglass_client, parsed_time)
     # weather_request = 'airTemperature,pressure,cloudCover,currentDirection,currentSpeed,gust,humidity,seaLevel,visibility,windDirection,windSpeed'
     # weather_url = "weather/point?lat=#{@record_new.latitude}&lng=#{@record_new.longitude}&start=#{start_time}&end=#{end_DateTime_hour}&source=#{"sg"}&params=#{weather_request}"
-    weather_url = stormglass_client.create_url("weather", parsed_time, @record_new.latitude, @record_new.longitude)
+    weather_url = stormglass_client.create_url("weather")
 
     parsed_response = stormglass_client.faraday_request(weather_url)
     data = parsed_response["hours"][0]
@@ -96,7 +96,7 @@ require './lib/apis/get_external_api.rb'
     ################Future PORO################
   def create_tide(stormglass_client, parsed_time)
     # tide_url="tide/extremes/point?lat=#{@record_new.latitude}&lng=#{@record_new.longitude}&start=#{start_time}&end=#{end_DateTime_day}"
-    tide_url = stormglass_client.create_url("tide", parsed_time, @record_new.latitude, @record_new.longitude)
+    tide_url = stormglass_client.create_url("tide")
     parsed_response = stormglass_client.faraday_request(tide_url)
     response_successfull?(parsed_response)
 
@@ -127,7 +127,7 @@ require './lib/apis/get_external_api.rb'
     # astro_request = "astronomicalDawn,astronomicalDusk,civilDawn,civilDusk,moonFraction,moonPhase,moonrise,moonset,sunrise,sunset,time"
     # astro_url="astronomy/point?lat=#{@record_new.latitude}&lng=#{@record_new.longitude}&start=#{start_time}&end=#{end_DateTime_day}&params=#{astro_request}"
 
-    astro_url = stormglass_client.create_url("astro", parsed_time, @record_new.latitude, @record_new.longitude)
+    astro_url = stormglass_client.create_url("astro")
     parsed_response = stormglass_client.faraday_request(astro_url)
 
     response_successfull?(parsed_response)
@@ -151,7 +151,7 @@ require './lib/apis/get_external_api.rb'
 
     # wave_url = "weather/point?lat=#{@record_new.latitude}&lng=#{@record_new.longitude}&start=#{start_date}&end=#{end_DateTime_day}&params=#{wave_request}"
 
-    wave_url = stormglass_client.create_url("wave", parsed_time, @record_new.latitude, @record_new.longitude)
+    wave_url = stormglass_client.create_url("wave")
     parsed_response = stormglass_client.faraday_request(wave_url)
 
     response_successfull?(parsed_response)
