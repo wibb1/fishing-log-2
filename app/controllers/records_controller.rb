@@ -42,17 +42,21 @@ require './lib/apis/get_external_api.rb'
     @record_new.user = current_user
     ################Future helper################
     parsed_time = Time.parse(@record_new.date)
-    start_time = parsed_time.getutc.to_s
-    end_DateTime_hour = parsed_time.advance(hours: 1).getutc.to_s
-    end_DateTime_day = parsed_time.advance(days: 1).getutc.to_s
-    start_day = parsed_time.beginning_of_day.getutc.to_s
-    end_day = parsed_time.end_of_day.getutc.to_s
+    # start_time = parsed_time.getutc.to_s
+    # end_DateTime_hour = parsed_time.advance(hours: 1).getutc.to_s
+    # end_DateTime_day = parsed_time.advance(days: 1).getutc.to_s
+    # start_day = parsed_time.beginning_of_day.getutc.to_s
+    # end_day = parsed_time.end_of_day.getutc.to_s
     
-    create_weather(start_time, end_DateTime_hour)
-    create_tide(start_day, end_day)
-    create_astro(start_day, end_day)
-    create_waves(start_time, end_DateTime_hour)
-
+    stormglass_client = Apis::StormglassApi::V2::Client.new(ENV['STORMGLASS_API_KEY'])
+    # create_weather(stormglass_client, start_time, end_DateTime_hour)
+    # create_tide(stormglass_client, start_day, end_day)
+    # create_astro(stormglass_client, start_day, end_day)
+    # create_waves(stormglass_client, start_time, end_DateTime_hour)
+    create_weather(stormglass_client, parsed_time)
+    create_tide(stormglass_client, parsed_time)
+    create_astro(stormglass_client, parsed_time)
+    create_waves(stormglass_client, parsed_time)
     if @record_new.save
       flash[:notice] = "Record successfully saved"
       puts "*****Record sucessfully saved*****"
@@ -64,14 +68,12 @@ require './lib/apis/get_external_api.rb'
     end
   end
     ################Future PORO################
-  def create_weather(start_time, end_DateTime_hour)
-    weather_request = 'airTemperature,pressure,cloudCover,currentDirection,currentSpeed,gust,humidity,seaLevel,visibility,windDirection,windSpeed'
+  def create_weather(stormglass_client, parsed_time)
+    # weather_request = 'airTemperature,pressure,cloudCover,currentDirection,currentSpeed,gust,humidity,seaLevel,visibility,windDirection,windSpeed'
+    # weather_url = "weather/point?lat=#{@record_new.latitude}&lng=#{@record_new.longitude}&start=#{start_time}&end=#{end_DateTime_hour}&source=#{"sg"}&params=#{weather_request}"
+    weather_url = stormglass_client.create_url("weather", parsed_time, @record_new.latitude, @record_new.longitude)
 
-    weather_url = "weather/point?lat=#{@record_new.latitude}&lng=#{@record_new.longitude}&start=#{start_time}&end=#{end_DateTime_hour}&source=#{"sg"}&params=#{weather_request}"
-
-    stormglass_api_client = Apis::StormglassApi::V2::Client.new(ENV['STORMGLASS_API_KEY'])
-    parsed_response = faraday_request(weather_url)
-
+    parsed_response = stormglass_client.faraday_request(weather_url)
     data = parsed_response["hours"][0]
 
     @record_new.airTemperature = ((data["airTemperature"]["sg"])*9/5+32).round(0).to_s
@@ -82,13 +84,23 @@ require './lib/apis/get_external_api.rb'
     @record_new.visibility = ((data["visibility"]["sg"])*0.621371).round(2).to_s
     @record_new.windDirection = data["windDirection"]["sg"].to_s
     @record_new.windSpeed = mps_to_mph(data["windSpeed"]["sg"])
-    @record_new.currentDirection = data["currentDirection"]["sg"].to_s
-    @record_new.currentSpeed = mps_to_mph(data["currentSpeed"]["sg"])
+    #binding.pry
+    if(data.include?("current"))
+      @record_new.currentDirection = data["currentDirection"]["sg"].to_s
+      @record_new.currentSpeed = mps_to_mph(data["currentSpeed"]["sg"])
+    else
+      @record_new.currentDirection = "NA"
+      @record_new.currentSpeed = 0
+    end
   end
     ################Future PORO################
-  def create_tide(start_time, end_DateTime_day)
-    tide_url="tide/extremes/point?lat=#{@record_new.latitude}&lng=#{@record_new.longitude}&start=#{start_time}&end=#{end_DateTime_day}"
-    parsed_response = faraday_request(tide_url)
+  def create_tide(stormglass_client, parsed_time)
+    # tide_url="tide/extremes/point?lat=#{@record_new.latitude}&lng=#{@record_new.longitude}&start=#{start_time}&end=#{end_DateTime_day}"
+    tide_url = stormglass_client.create_url("tide", parsed_time, @record_new.latitude, @record_new.longitude)
+    parsed_response = stormglass_client.faraday_request(tide_url)
+    response_successfull?(parsed_response)
+
+
     tide_data = parsed_response["data"]
     @record_new.first_type = tide_data[0]["type"]
     @record_new.first_height = m_to_ft(tide_data[0]["height"])
@@ -111,40 +123,46 @@ require './lib/apis/get_external_api.rb'
     end
   end
     ################Future PORO################
-  def create_astro(start_time, end_DateTime_day)
-    astro_request = "astronomicalDawn,astronomicalDusk,civilDawn,civilDusk,moonFraction,moonPhase,moonrise,moonset,sunrise,sunset,time"
-    astro_url="astronomy/point?lat=#{@record_new.latitude}&lng=#{@record_new.longitude}&start=#{start_time}&end=#{end_DateTime_day}&params=#{astro_request}"
-    parsed_response = faraday_request(astro_url)
-    astro_data = parsed_response["data"]
+  def create_astro(stormglass_client, parsed_time)
+    # astro_request = "astronomicalDawn,astronomicalDusk,civilDawn,civilDusk,moonFraction,moonPhase,moonrise,moonset,sunrise,sunset,time"
+    # astro_url="astronomy/point?lat=#{@record_new.latitude}&lng=#{@record_new.longitude}&start=#{start_time}&end=#{end_DateTime_day}&params=#{astro_request}"
 
+    astro_url = stormglass_client.create_url("astro", parsed_time, @record_new.latitude, @record_new.longitude)
+    parsed_response = stormglass_client.faraday_request(astro_url)
+
+    response_successfull?(parsed_response)
+    astro_data = parsed_response["data"]
     @record_new.astronomicalDawn = format_time(astro_data[0]["astronomicalDawn"])
     @record_new.astronomicalDusk = format_time(astro_data[0]["astronomicalDusk"])
     @record_new.civilDawn = format_time(astro_data[0]["civilDawn"])
     @record_new.civilDusk = format_time(astro_data[0]["civilDusk"])
     @record_new.moonFraction = (astro_data[0]["moonFraction"]).round(2).to_s
     @record_new.moonPhase = astro_data[0]["moonPhase"]["closest"]["text"].to_s
-    @record_new.moonrise = format_time(astro_data[0]["moonrise"])
-    @record_new.moonset = format_time(astro_data[0]["moonset"])
+    @record_new.moonrise = (astro_data[0]["moonrise"]==nil ? "NA" : format_time(astro_data[0]["moonrise"]))
+    @record_new.moonset = (astro_data[0]["moonset"]==nil ? "NA" : format_time(astro_data[0]["moonset"]))
     @record_new.sunrise = format_time(astro_data[0]["sunrise"])
     @record_new.sunset = format_time(astro_data[0]["sunset"])
     @record_new.astro_time = format_time(astro_data[0]["time"])
 
   end
     ################Future PORO################
-  def create_waves(start_date, end_DateTime_day)
-    wave_request = 'seaLevel,swellDirection,swellHeight,swellPeriod,secondarySwellDirection,secondarySwellHeight,secondarySwellPeriod,waveDirection,waveHeight,wavePeriod,windWaveDirection,windWaveHeight,windWavePeriod'
+  def create_waves(stormglass_client, parsed_time)
+    # wave_request = 'seaLevel,swellDirection,swellHeight,swellPeriod,secondarySwellDirection,secondarySwellHeight,secondarySwellPeriod,waveDirection,waveHeight,wavePeriod,windWaveDirection,windWaveHeight,windWavePeriod'
 
-    wave_url = "weather/point?lat=#{@record_new.latitude}&lng=#{@record_new.longitude}&start=#{start_date}&end=#{end_DateTime_day}&params=#{wave_request}"
-    parsed_response = faraday_request(wave_url)
+    # wave_url = "weather/point?lat=#{@record_new.latitude}&lng=#{@record_new.longitude}&start=#{start_date}&end=#{end_DateTime_day}&params=#{wave_request}"
+
+    wave_url = stormglass_client.create_url("wave", parsed_time, @record_new.latitude, @record_new.longitude)
+    parsed_response = stormglass_client.faraday_request(wave_url)
+
+    response_successfull?(parsed_response)
     data = parsed_response["hours"][0]
-    
-    @record_new.seaLevel=m_to_ft(data["seaLevel"]["sg"])
+    data.include?("seaLevel") ? @record_new.seaLevel=m_to_ft(data["seaLevel"]["sg"]) : @record_new.seaLevel=0
     @record_new.swellDirection=data["swellDirection"]["sg"].to_s
     @record_new.swellHeight=m_to_ft(data["swellHeight"]["sg"])
     @record_new.swellPeriod=data["swellPeriod"]["sg"].to_s
-    @record_new.secondarySwellDirection=data["secondarySwellDirection"]["sg"].to_s
-    @record_new.secondarySwellHeight=m_to_ft(data["secondarySwellHeight"]["sg"])
-    @record_new.secondarySwellPeriod=data["secondarySwellPeriod"]["sg"].to_s
+    @record_new.secondarySwellDirection=data.include?("secondarySwellPeriod") ? data["secondarySwellDirection"]["sg"].to_s : "NA"
+    @record_new.secondarySwellHeight= data.include?("secondarySwellHeight") ? m_to_ft(data["secondarySwellHeight"]["sg"]) : "NA"
+    @record_new.secondarySwellPeriod= data.include?("secondarySwellHeight") ? data["secondarySwellPeriod"]["sg"].to_s : "NA"
     @record_new.waveDirection=data["waveDirection"]["sg"].to_s
     @record_new.waveHeight=m_to_ft(data["waveHeight"]["sg"])
     @record_new.wavePeriod=data["wavePeriod"]["sg"].to_s
@@ -152,16 +170,6 @@ require './lib/apis/get_external_api.rb'
     @record_new.windWaveHeight=m_to_ft(data["windWaveHeight"]["sg"])
     @record_new.windWavePeriod=m_to_ft(data["windWavePeriod"]["sg"])
   end
-    ################Future PORO################
-  # def faraday_request(url)
-  #   api_key = ENV['STORMGLASS_API_KEY']
-
-  #   response = Faraday.get("https://api.stormglass.io/v2/#{url}") do |req|
-  #     req.headers["Authorization"] = api_key
-  #   end
-  #   parsed_response = JSON.parse(response.body)
-  #   return parsed_response
-  # end
 
   def m_to_ft(number)
     return (number*3.28).round(2).to_s
@@ -183,5 +191,15 @@ require './lib/apis/get_external_api.rb'
 
   def update_params
     params.require(:record).permit(:name, :success, :body)
+  end
+
+  def response_successfull?(parsed_response)
+    return parsed_response if parsed_response.exclude?("error")
+    begin
+      error_message = "Errors: #{parsed_response['errors']}, Response: #{parsed_response}"
+      raise StandardError.new "#{parsed_response}"
+    rescue 
+      redirect_to root_path, flash: {error: error_message}            
+    end
   end
 end

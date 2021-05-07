@@ -3,7 +3,7 @@ module Apis
     module V2
       class Client
         require 'faraday'
-
+        require 'date'
         attr_reader :api_key
 
         def initialize(api_key)
@@ -14,22 +14,52 @@ module Apis
           response = Faraday.get("https://api.stormglass.io/v2/#{url}") do |req|
             req.headers["Authorization"] = @api_key
           end
-
+          puts "https://api.stormglass.io/v2/#{url}"
           parsed_response = JSON.parse(response.body)
-          response_code = response.env.status
-
-          return parsed_response if response_successfull(response_code)
-          begin
-            error_message = "Code: #{response_code}, Response: #{parsed_response['message']}"
-            raise StandardError.new "#{error_message}"
-          rescue 
-            redirect_to new_path, flash: {error: error_message}            
-          end
-
-          def response_successfull(response_code)
-            response_code == 200
-          end
+          puts "API Parsed Response"
+          puts parsed_response
+          return parsed_response
         end
+
+        def create_url(request, parsed_time, lat, lng)
+          if request == "weather"
+            weather_request = 'airTemperature,pressure,cloudCover,currentDirection,currentSpeed,gust,humidity,seaLevel,visibility,windDirection,windSpeed'
+            url = "weather/point?lat=#{lat}&lng=#{lng}&start=#{get_start_hour(parsed_time)}&end=#{get_end_hour(parsed_time)}&source=#{"sg"}&params=#{weather_request}"
+
+          elsif request == 'wave' 
+            wave_request = 'seaLevel,swellDirection,swellHeight,swellPeriod,secondarySwellDirection,secondarySwellHeight,secondarySwellPeriod,waveDirection,waveHeight,wavePeriod,windWaveDirection,windWaveHeight,windWavePeriod'
+            url = "weather/point?lat=#{lat}&lng=#{lng}&start=#{get_start_day(parsed_time)}&end=#{get_end_day(parsed_time)}&params=#{wave_request}"
+
+          elsif request == "tide"
+            url="tide/extremes/point?lat=#{lat}&lng=#{lng}&start=#{get_start_day(parsed_time)}&end=#{get_end_day(parsed_time)}"
+
+          elsif request == "astro"
+            astro_request = "astronomicalDawn,astronomicalDusk,civilDawn,civilDusk,moonFraction,moonPhase,moonrise,moonset,sunrise,sunset,time"
+            url="astronomy/point?lat=#{lat}&lng=#{lng}&start=#{get_start_day(parsed_time)}&end=#{get_end_day(parsed_time)}&params=#{astro_request}"
+
+          else
+            url = "error in request"
+          end
+
+          return url
+        end
+
+        def get_start_hour(parsed_time)
+          start_time = parsed_time.getutc.to_s
+        end
+
+        def get_end_hour(parsed_time)
+          end_DateTime_hour = parsed_time.advance(hours: 1).getutc.to_s
+        end
+
+        def get_start_day(parsed_time)
+          start_day = parsed_time.beginning_of_day.getutc.to_s
+        end
+
+        def get_end_day(parsed_time)
+          end_DateTime_day = parsed_time.advance(days: 1).getutc.to_s
+        end
+
       end
     end
   end
