@@ -27,7 +27,7 @@ module Apis
         def obtain_data()
           hash = {}
           %w[weather tide astro].each do |request|
-            hash[request] = faraday_request(create_url(request)) #this takes the existing responses and compiles them into a single hash
+            hash[request] = faraday_request(create_url(request)) 
           end
 
           return hash
@@ -40,8 +40,7 @@ module Apis
             end
 
           parsed_response = JSON.parse(response.body)
-
-          return response_successfull?(parsed_response)
+          return parsed_response
         end
 
         def create_url(request)
@@ -75,20 +74,6 @@ module Apis
         def get_end_day()
           end_DateTime_day = @parsed_time.advance(days: 1).getutc.to_s
         end
-
-        # *******************************************************************
-        # need to reinstitute error checking
-        def response_successfull?(parsed_response)
-          return parsed_response if parsed_response.exclude?('error')
-          begin
-            error_message =
-              "Errors: #{parsed_response['errors']}, Response: #{parsed_response}"
-            raise StandardError.new "#{parsed_response}"
-          rescue StandardError
-            redirect_to root_path, flash: { error: error_message }
-          end
-        end
-        # *******************************************************************
       end
     end
   end

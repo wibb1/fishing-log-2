@@ -16,62 +16,32 @@ module Apis
         def format_data(data)
           data['cloudCover'] =
             data['cloudCover'].nil? ? 'NA' : round0(data['cloudCover'])
+          data['windDirection'] =
+            data['windDirection'].nil? ? 'NA' : round0(data['windDirection'])
+          data['windWaveDirection'] = data['windWaveDirection'].nil? ? 'NA' 
+            : round0(data['windWaveDirection'])
+          data['waveDirection'] =
+            data['waveDirection'].nil? ? 'NA' : round0(data['waveDirection'])
+
           data['moonFraction'] =
             data['moonFraction'].nil? ? 'NA' : round2(data['moonFraction'])
+
           data['visibility'] =
             data['visibility'].nil? ? 'NA' : distance_mi(data['visibility'])
+
           data['airTemperature'] =
             data['airTemperature'].nil? ? 'NA' : temp_F(data['airTemperature'])
+
           data['pressure'] =
             data['pressure'].nil? ? 'NA' : pressure_inHg(data['pressure'])
+
           data['gust'] = data['gust'].nil? ? 'NA' : speed_mph(data['gust'])
           data['windSpeed'] =
             data['windSpeed'].nil? ? 'NA' : speed_mph(data['windSpeed'])
           data['currentSpeed'] =
             data['currentSpeed'].nil? ? 'NA' : speed_mph(data['currentSpeed'])
-          data['windDirection'] =
-            data['windDirection'].nil? ? 'NA' : round0(data['windDirection'])
-          data['windWaveDirection'] =
-            if data['windWaveDirection'].nil?
-              'NA'
-            else
-              round0(data['windWaveDirection'])
-            end
-          data['waveDirection'] =
-            data['waveDirection'].nil? ? 'NA' : round0(data['waveDirection'])
 
-          unchanged = %w[
-            gust
-            windSpeed
-            currentSpeed
-            name
-            success
-            body
-            latitude
-            longitude
-            datetime
-            date
-            time
-            js_date
-            user
-            pressure
-            airTemperature
-            visibility
-            cloudCover
-            moonFraction
-            first_type
-            second_type
-            third_type
-            fourth_type
-            first_time
-            second_time
-            third_time
-            fourth_time
-            first_height
-            second_height
-            third_height
-            fourth_height
-          ]
+
           distance_short = %w[
             seaLevel
             swellHeight
@@ -116,10 +86,6 @@ module Apis
           end
         end
 
-        def checkdata(data, result)
-          data == nil ? 'NA' : result
-        end
-
         def distance_mi(km)
           round0(km * 0.621371)
         end
@@ -157,47 +123,58 @@ module Apis
 
         def get_api_data
           client = Apis::StormglassApi::V2::Client.new(@parsed_time, @lat, @lng)
-          hash = client.obtain_data #this is the raw response that needs to be checked for errors
+          hash = client.obtain_data 
+          output = {}
+          
+          #weather
           temp_hash =
             client.weather_request.split(',').to_h { |key| [key, nil] }
-          output = {}
-
-          temp_hash.each_key do |key|
-            temp_hash[key] = hash['weather']['hours'][0][key]['sg'] if hash[
-              'weather'
-            ][
-              'hours'
-            ][
-              0
-            ].include?(key)
+          if hash.dig('weather', 'errors')
+            temp_hash = {'weather' => {'errors'=> hash['weather']['errors']['key']}}
+          else
+            temp_hash.each_key do |key|
+              if hash['weather']['hours'][0].include?(key)
+                temp_hash[key] = hash['weather']['hours'][0][key]['sg']
+              end
+            end
           end
           output.merge!(temp_hash)
 
+          #astro
           temp_hash = client.astro_request.split(',').to_h { |key| [key, nil] }
-          temp_hash.each_key do |key|
-            temp_hash[key] = hash['astro']['data'][0][key] if hash['astro'][
-              'data'
-            ][
-              0
-            ].include?(key)
-          end
-          temp_hash['moonPhase'] =
-            hash['astro']['data'][0]['moonPhase']['closest']['text']
+          if hash.dig('astro', 'errors')
+            temp_hash = {'astro' => {'errors'=> hash['astro']['errors']['key']}}
+          else
+            temp_hash.each_key do |key|
+              if hash['astro']['data'][0].include?(key)
+                temp_hash[key] = hash['astro']['data'][0][key]
+              end
+            end
+            temp_hash['moonPhase'] =
+              hash['astro']['data'][0]['moonPhase']['closest']['text']
+          end  
           output.merge!(temp_hash)
 
-          i = 0
-          tide_data = hash['tide']['data']
-          %w[first second third fourth].each do |j|
-            if tide_data[i]
-              output["#{j}_type"] = tide_data[i]['type']
-              output["#{j}_time"] = format_time(tide_data[i]['time'])
-              output["#{j}_height"] = round2(tide_data[i]['height'])
-              i += 1
+          #tide
+          if hash.dig('tide', 'errors')
+            output.merge!({'tide' => {'errors' => hash['astro']['errors']['key']}})
+          else
+            i = 0
+            tide_data = hash['tide']['data']
+            %w[first second third fourth].each do |j|
+              if tide_data[i]
+                output["#{j}_type"] = tide_data[i]['type']
+                output["#{j}_time"] = format_time(tide_data[i]['time'])
+                output["#{j}_height"] = round2(tide_data[i]['height'])
+                i += 1
+              end
             end
           end
 
-          format_data(output)
-          output.transform_values! { |value| value.presence || 'NA' }
+          unless hash.dig('weather', 'errors') || hash.dig('astro', 'errors') || hash.dig('tide', 'errors')
+            format_data(output) 
+            output.transform_values! { |value| value.presence || 'NA' }
+          end
           return output
         end
       end
