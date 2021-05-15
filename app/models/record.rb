@@ -1,4 +1,7 @@
 class Record < ApplicationRecord
+  attr_accessor :latitude_direction
+  attr_accessor :longitude_direction
+
   validates :name, presence: true
   validates :latitude, presence: true
   validates :longitude, presence: true

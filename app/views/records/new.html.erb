@@ -8,59 +8,76 @@
 
 <div class="section-indent m-md">
   <div class="container has-text-dark">
-  <%= form_for(@record_new) do |f| %>
-   
-      <div class="field">
-        <%= f.label :name, :class => "label" %>
-        <div class="control">
-          <%= f.text_field :name, placeholder: "Name", :class => "input", :required => true %>
+    <%= form_for(@record_new) do |f| %>
+
+    <div class="field">
+      <%= f.label :name, :class => "label" %>
+      <div class="control">
+        <%= f.text_field :name, placeholder: "Name", :class => "input", :required => true %>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= f.label :success, "How was the fishing?", :class => "label" %>
+      <div class="control">
+        <div class="select">
+          <%= f.select :success, ["Good", "Bad"], :prompt => "Select One", :required => true %>
         </div>
       </div>
+    </div>
 
-      <div class="field">
-        <%= f.label :success, "How was the fishing?", :class => "label" %>
-        <div class="control">
-          <div class="select">
-            <%= f.select :success, ["Good", "Bad"], :prompt => "Select One", :required => true %>
-          </div>
+    <div class="field">
+      <%= f.label :body, "Description", :class => "label" %>
+      <div class="control">
+        <%= f.text_area :body, placeholder: "Description", :class => "textarea" %>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= f.label :latitude, :class => "label" %>
+      <div class="control">
+        <%= f.number_field :latitude, step: :any, placeholder: "Typically 41.3 to 41.8", :class => "input", :required => true %>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= f.label :longitude, :class => "label" %>
+      <div class="control">
+        <%= f.number_field :longitude, step: :any, placeholder: "Typically -70 to -70.6", :class => "input", :required => true %>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= f.label :latitude_direction, :class => "label" %>
+      <div class="control">
+        <div class="select">
+          <%= f.select :latitude_direction, ["N", "S"], :prompt => "Select One", :required => true %>
         </div>
       </div>
+    </div>
 
-      <div class="field">
-        <%= f.label :body, "Description", :class => "label" %>
-        <div class="control">
-          <%= f.text_area :body, placeholder: "Description", :class => "textarea" %>
+    <div class="field">
+      <%= f.label :longitude_direction, :class => "label" %>
+      <div class="control">
+        <div class="select">
+          <%= f.select :longitude_direction, ["E", "W"], :prompt => "Select One", :required => true %>
         </div>
       </div>
+    </div>
 
-      <div class="field">
-        <%= f.label :latitude, :class => "label" %>
-        <div class="control">
-          <%= f.number_field :latitude, step: :any, placeholder: "Typically 41.3 to 41.8", :class => "input", :required => true %>
-        </div>
-      </div>
-
-      <div class="field">
-        <%= f.label :longitude, :class => "label" %>
-        <div class="control">
-          <%= f.number_field :longitude, step: :any, placeholder: "Typically -70 to -70.6", :class => "input", :required => true %>
-        </div>
-      </div>
-
-      </div>
-      <div class="field">
-        <%= f.label :datetime, :class => "label" %>
-        <div class="control">
+    <div class="field">
+      <%= f.label :datetime, :class => "label" %>
+      <div class="control">
+        <div class="datetime_select">
           <%= f.datetime_select :datetime, { order: [:day, :month, :year, :hour, :minute] }, max: Time.now().advance(hour: -1), :class=> "select", :required => true  %>
         </div>
       </div>
+    </div>
 
-      <div class="field">
-        <%= f.submit "Submit", :class =>"button is-primary has-text-weight-bold" %>
-      </div>
+    <div class="field">
+      <%= f.submit "Submit", :class =>"button is-primary has-text-weight-bold" %>
+    </div>
 
     <% end %>
   </div>
 </div>
-
-
