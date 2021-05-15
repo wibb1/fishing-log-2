@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_23_135030) do
+ActiveRecord::Schema.define(version: 2020_08_31_202838) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -77,6 +77,30 @@ ActiveRecord::Schema.define(version: 2020_08_23_135030) do
     t.index ["user_id"], name: "index_records_on_user_id"
   end
 
+  create_table "records_species", id: false, force: :cascade do |t|
+    t.bigint "species_id", null: false
+    t.bigint "record_id", null: false
+    t.index ["record_id", "species_id"], name: "index_records_species_on_record_id_and_species_id"
+    t.index ["species_id", "record_id"], name: "index_records_species_on_species_id_and_record_id"
+  end
+
+  create_table "species", force: :cascade do |t|
+    t.string "common_name", null: false
+    t.string "scientific_name", null: false
+    t.string "water_column", null: false
+    t.string "legal_size", null: false
+    t.string "legal_size_slot", default: "NA", null: false
+    t.string "legal_size_super", default: "NA", null: false
+    t.string "winter_season_start", default: "NA", null: false
+    t.string "spring_season_start", default: "NA", null: false
+    t.string "summer_season_start", default: "NA", null: false
+    t.string "fall_season_start", default: "NA", null: false
+    t.string "winter_bag_limit", default: "NA", null: false
+    t.string "spring_bag_limit", default: "NA", null: false
+    t.string "summer_bag_limit", default: "NA", null: false
+    t.string "fall_bag_limit", default: "NA", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -88,6 +112,7 @@ ActiveRecord::Schema.define(version: 2020_08_23_135030) do
     t.string "first_name", null: false
     t.string "last_name", null: false
     t.string "user_name", null: false
+    t.boolean "admin", default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
