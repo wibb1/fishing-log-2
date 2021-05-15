@@ -40,7 +40,9 @@ class RecordsController < ApplicationController
     @record_new.success = create_params['success']
     @record_new.body = create_params['body']
     @record_new.latitude = create_params['latitude']
+    @record_new.latitude *= -1 if create_params['latitude_direction']=="S"
     @record_new.longitude = create_params['longitude']
+    @record_new.longitude *= -1 if create_params['longitude_direction']=="W"
     @record_new.datetime = time
     @record_new.date = time.strftime('%Y-%m-%dT%H:%M:%S%z')
     @record_new.time = time.strftime('%H:%M')
@@ -84,7 +86,7 @@ class RecordsController < ApplicationController
   def create_params
     params
       .require(:record)
-      .permit(:name, :success, :body, :latitude, :longitude, :datetime)
+      .permit(:name, :success, :body, :latitude, :latitude_direction, :longitude, :longitude_direction, :datetime)
   end
 
   def update_params
