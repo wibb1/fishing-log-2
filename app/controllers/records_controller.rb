@@ -58,7 +58,6 @@ class RecordsController < ApplicationController
         @record_new.longitude,
       )
     hash = response.get_api_data
-    puts hash
     if hash.dig('weather', 'errors') || hash.dig('astro', 'errors') || hash.dig('tide', 'errors')
       api_errors_array = %w[weather astro tide].map { |i| "#{i.capitalize} request had an error: #{hash[i]['errors']}" }
       api_errors = api_errors_array.to_sentence
@@ -68,10 +67,8 @@ class RecordsController < ApplicationController
     else
 
       @record_new.assign_attributes(hash) 
-
       if @record_new.save
         flash[:notice] = 'Record successfully saved'
-        puts '*****Record sucessfully saved*****'
         redirect_to "/records/react/#{@record_new.id}"
       else
         flash[:errors] = @record_new.errors.full_messages.to_sentence
