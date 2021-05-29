@@ -21,7 +21,7 @@
       <%= f.label :success, "How was the fishing?", :class => "label" %>
       <div class="control">
         <div class="select">
-          <%= f.select :success, ["Good", "Bad"], :prompt => "Select One", :required => true %>
+          <%= f.collection_select :success, Record.successes, :first, :first, :prompt => "Select One", :required => true %>
         </div>
       </div>
     </div>
