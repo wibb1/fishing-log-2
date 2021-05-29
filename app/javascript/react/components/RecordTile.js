@@ -33,9 +33,9 @@ const RecordTile = ({
 }) => {
 	const success_color = (success) => {
 		let success_color;
-		if (success === 'Good') {
+		if (success === 'good') {
 			success_color = 'is-success';
-		} else if (success === 'Bad') {
+		} else if (success === 'bad') {
 			success_color = 'is-light';
 		}
 		return success_color;
