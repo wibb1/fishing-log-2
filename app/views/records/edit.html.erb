@@ -8,34 +8,34 @@
 
 <div class="section-indent m-md">
   <div class="container has-text-dark">
-  <%= form_for(@record)  do |f| %>
-      <div class="field">
-        <%= f.label :name, :class => "label" %>
-        <div class="control" >
-          <%= f.text_field :name, placeholder: "Spot Name", :class => "input", :required => true %>
+    <%= form_for(@record)  do |f| %>
+    <div class="field">
+      <%= f.label :name, :class => "label" %>
+      <div class="control">
+        <%= f.text_field :name, placeholder: "Spot Name", :class => "input", :required => true %>
+      </div>
+    </div>
+
+    <div class="field">
+      <%= f.label :success, "How was the fishing?", :class => "label" %>
+      <div class="control">
+        <div class="select">
+          <%= f.collection_select :success, Record.successes, :first, :first, :prompt => "Select One", :required => true %>
         </div>
       </div>
+    </div>
 
-      <div class="field">
-        <%= f.label :success, "How was the fishing?", :class => "label" %>
-        <div class="control">
-          <div class="select">
-            <%= f.select :success, ["Good", "Bad"], :prompt => "Select One", :required => true %>
-          </div>
-        </div>
+    <div class="field">
+      <%= f.label :body, "Spot Description", :class => "label" %>
+      <div class="control">
+        <%= f.text_area :body, placeholder: "Description", :class => "textarea" %>
       </div>
+    </div>
 
-      <div class="field">
-        <%= f.label :body, "Spot Description", :class => "label" %>
-        <div class="control">
-          <%= f.text_area :body, placeholder: "Description", :class => "textarea" %>
-        </div>
-      </div>
+    <div class="field">
+      <%= f.submit "Submit", :class =>"button is-primary has-text-weight-bold" %>
+    </div>
 
-      <div class="field">
-        <%= f.submit "Submit", :class =>"button is-primary has-text-weight-bold" %>
-      </div>
-
-    <% end %>    
+    <% end %>
   </div>
 </div>

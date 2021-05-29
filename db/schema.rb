@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_31_202838) do
+ActiveRecord::Schema.define(version: 2021_05_29_114509) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "records", force: :cascade do |t|
     t.string "name", null: false
-    t.string "success", null: false
+    t.string "old_success"
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(version: 2020_08_31_202838) do
     t.text "windWaveDirection", default: "NA"
     t.text "windWaveHeight", default: "NA"
     t.text "windWavePeriod", default: "NA"
+    t.integer "success", default: 0, null: false
     t.index ["user_id"], name: "index_records_on_user_id"
   end
 
