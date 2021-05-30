@@ -1,0 +1,14 @@
+<section class="hero">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">Species List</h1>
+    </div>
+  </div>
+</section>
+<% @species.each do |s| %>
+  <p><%= s.common_name %>
+  <%= s.scientific_name %>
+  <%= s.shallow_depth %>
+  <%= s.deep_depth %>
+  <p>----------</p>
+<% end %>

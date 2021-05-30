@@ -13,6 +13,6 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :species, only: [:new, :create, :edit, :update]
+  resources :species, only: [:new, :create, :edit, :update, :index]
   
 end
