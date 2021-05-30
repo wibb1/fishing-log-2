@@ -21,7 +21,7 @@
 #     fill_in 'Email', with: user.email
 #     fill_in 'Password', with: user.password
 
-#     click_button 'Log in'
+#     click_button 'Sign in'
 
 #     visit new_record_path
 
@@ -41,14 +41,14 @@
 #     fill_in 'Email', with: user.email
 #     fill_in 'Password', with: user.password
 
-#     click_button 'Log in'
+#     click_button 'Sign in'
 
 #     visit new_record_path
     
 #     fill_in 'record_name', with: 'name'
 #     fill_in 'record_body', with: 'body'
-#     fill_in 'record_latitude', with: 41.8
-#     fill_in 'record_longitude', with: -70.8
+#     fill_in 'record_latitude', with: '41.8'
+#     fill_in 'record_longitude', with: '-70.8'
 #     select 'Good', from: 'record_success'
     
 #     select "16", from: 'record_datetime_3i'
@@ -57,10 +57,10 @@
 #     select "11", from: 'record_datetime_4i'
 #     select "22", from: 'record_datetime_5i'
 
-#     #click_button 'Submit'
-    
-#     expect { click_button "Submit" }.to replace_page
+#     click_button 'Submit'
+#     save_and_open_page
+#     #expect { click_button "Submit" }.to replace_page
 #     expect(page).to have_content('Record successfully saved')
 
 #   end
-# end
+#end

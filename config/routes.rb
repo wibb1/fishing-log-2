@@ -12,4 +12,7 @@ Rails.application.routes.draw do
       resources :records, only: [:index, :show] 
     end
   end
+
+  resources :species, only: [:new, :create, :edit, :update, :index]
+  
 end

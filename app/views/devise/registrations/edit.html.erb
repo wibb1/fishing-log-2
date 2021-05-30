@@ -11,7 +11,7 @@
       <div class="container has-text-dark">
         <div class="field">
           <%= f.label :email %><br />
-          <%= f.email_field :email, autofocus: true, autocomplete: "Email" %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "Email", :class => "input" %>
         </div>
         <div class="field">
           <%= f.label :user_name, :class => "label" %>
@@ -22,7 +22,7 @@
         <% end %>
         <div class="field">
           <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-          <%= f.password_field :password, autocomplete: "New-password" %>
+          <%= f.password_field :password, autocomplete: "New-password", :class => "input" %>
           <% if @minimum_password_length %>
             <br />
             <em><%= @minimum_password_length %> characters minimum</em>
@@ -30,11 +30,11 @@
         </div>
         <div class="field">
           <%= f.label :password_confirmation %><br />
-          <%= f.password_field :password_confirmation, autocomplete: "New-password" %>
+          <%= f.password_field :password_confirmation, autocomplete: "New-password", :class => "input" %>
         </div>
         <div class="field">
           <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-          <%= f.password_field :current_password, autocomplete: "current-password" %>
+          <%= f.password_field :current_password, autocomplete: "current-password", :class => "input" %>
         </div>
         <div class="actions">
           <%= f.submit "Update" %>

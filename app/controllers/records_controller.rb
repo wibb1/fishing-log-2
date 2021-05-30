@@ -2,6 +2,8 @@ class RecordsController < ApplicationController
   require 'date'
   require './lib/apis/get_api_data.rb'
 
+before_action :authenticate_user!
+
   def new
     @record_new = Record.new
     @record_new.user = current_user
