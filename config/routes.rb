@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root 'homes#index'
+  root to: 'pages#home'
   devise_for :users
 
   get '/records/react', to: "records#index"

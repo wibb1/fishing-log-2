@@ -1,4 +1,9 @@
 class Record < ApplicationRecord
+  attr_accessor :latitude_direction
+  attr_accessor :longitude_direction
+
+  enum success: { good: 0, bad: 1, meh: 2 }
+
   validates :name, presence: true
   validates :latitude, presence: true
   validates :longitude, presence: true

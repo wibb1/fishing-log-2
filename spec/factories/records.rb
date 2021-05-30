@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :record do
     name { Faker::Movie.title }
-    success { 'Good' }
+    success { 'good' }
     body { Faker::Movie.quote }
     latitude {41.8}
     longitude {-70.8}
