@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_29_114509) do
+ActiveRecord::Schema.define(version: 2021_05_30_182259) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -88,10 +88,8 @@ ActiveRecord::Schema.define(version: 2021_05_29_114509) do
   create_table "species", force: :cascade do |t|
     t.string "common_name", null: false
     t.string "scientific_name", null: false
-    t.string "water_column", null: false
-    t.string "legal_size", null: false
-    t.string "season_dates", default: "NA", null: false
-    t.string "bag_limits", default: "NA", null: false
+    t.string "shallow_depth", null: false
+    t.string "deep_depth", null: false
   end
 
   create_table "users", force: :cascade do |t|
