@@ -1,0 +1,39 @@
+<div class="section-indent m-md">
+  <div class="container has-text-dark">
+  <%= form_for(@species) do |f| %>
+   
+      <div class="field">
+        <%= f.label :common_name, :class => "label" %>
+        <div class="control">
+          <%= f.text_field :common_name, placeholder: "Name", :class => "input", :required => true %>
+        </div>
+      </div>
+      
+      <div class="field">
+        <%= f.label :scientific_name, :class => "label" %>
+        <div class="control">
+          <%= f.text_field :scientific_name, placeholder: "Name", :class => "input", :required => true %>
+        </div>
+      </div>
+
+      <div class="field">
+        <%= f.label :shallow_depth, :class => "label" %>
+        <div class="control">
+          <%= f.text_field :shallow_depth, placeholder: "Upper Depth Threshold (feet)", :class => "input" %>
+        </div>
+      </div>
+
+      <div class="field">
+        <%= f.label :deep_depth, :class => "label" %>
+        <div class="control">
+          <%= f.text_field :deep_depth, placeholder: "Lower Depth Threshold (feet)", :class => "input" %>
+        </div>
+      </div>
+
+      <div class="field">
+        <%= f.submit "Submit", :class =>"button is-primary has-text-weight-bold" %>
+      </div>
+
+    <% end %>
+  </div>
+</div>

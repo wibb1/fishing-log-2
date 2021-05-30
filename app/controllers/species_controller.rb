@@ -1,19 +1,24 @@
 class SpeciesController < ApplicationController
   
-  before_action :authenticate_admin!, only: [:new, :create, :edit, :update]
+  before_action :authenticate_admin!, only: [:new, :create, :edit, :update, :index]
+
+  def index
+    @species = Species.all
+  end
 
   def new
-    @species_new = species.new()
+    @species = Species.new()
   end
 
   def create
-    @species_new = @species.new(create_params)
-    if @speices_new.save
+    @species = Species.new(create_params)
+    if @species.save
       flash[:notice] = "Species successfully saved"
       puts "*****Species sucessfully saved*****"
-      render 'new'
+      @species = Species.all
+      render 'index'
     else
-      flash[:errors] = @species_new.errors.full_messages.to_sentence
+      flash[:errors] = Species_new.errors.full_messages.to_sentence
       puts "----#{@species_new.errors.full_messages.to_sentence}-----"
       render 'new'
     end
@@ -40,7 +45,7 @@ class SpeciesController < ApplicationController
   private
 
   def create_params
-    params.require(:species).permit(:common_name,:scientific_name, :water_column, :legal_size, :legal_size_slot, :legal_size_super)
+    params.require(:species).permit(:common_name,:scientific_name, :shallow_depth, :deep_depth)
   end
 
 end
