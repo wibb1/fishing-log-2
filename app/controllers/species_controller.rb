@@ -29,9 +29,10 @@ class SpeciesController < ApplicationController
   end
 
   def update
-    @species - Species.find(params[:id])
+    @species = Species.find(params[:id])
     if @species.update(create_params)
-      render 'new'
+      @species = Species.all
+      render 'index'
     else
       render 'edit'
     end
