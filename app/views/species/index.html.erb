@@ -5,10 +5,13 @@
     </div>
   </div>
 </section>
-<% @species.each do |s| %>
-  <p><%= s.common_name %>
-  <%= s.scientific_name %>
-  <%= s.shallow_depth %>
-  <%= s.deep_depth %>
+<div>
+  <p> Common Name - Scientific Name - Shallow Depth - Deep Depth </p><p>----------</p>
+  <% @species.each do |s| %>
+  <p><%= s.common_name %> - 
+    <%= s.scientific_name %> - 
+    <%= s.shallow_depth %> - 
+    <%= s.deep_depth %> </p>
   <p>----------</p>
-<% end %>
+  <% end %>
+<div>
