@@ -2,8 +2,8 @@ class RecordsController < ApplicationController
   require 'date'
   require './lib/apis/get_api_data.rb'
 
-before_action :authenticate_user!
-
+  before_action :authenticate_user!
+  before_action :set_species, only: [:new, :update, :create, :edit]
   def new
     @record_new = Record.new
     @record_new.user = current_user
@@ -92,4 +92,7 @@ before_action :authenticate_user!
     params.require(:record).permit(:name, :success, :body)
   end
 
+  def set_species
+    @species_all = Species.all
+  end
 end
