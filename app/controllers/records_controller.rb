@@ -4,6 +4,7 @@ class RecordsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :set_species, only: [:new, :update, :create, :edit]
+
   def new
     @record_new = Record.new
     @record_new.user = current_user
@@ -79,11 +80,11 @@ class RecordsController < ApplicationController
   def create_params
     params
       .require(:record)
-      .permit(:name, :success, :body, :latitude, :latitude_direction, :longitude, :longitude_direction, :datetime)
+      .permit(:name, :success, :body, :latitude, :latitude_direction, :longitude, :longitude_direction, :datetime, :species_id)
   end
 
   def update_params
-    params.require(:record).permit(:name, :success, :body)
+    params.require(:record).permit(:name, :success, :body, :species_id)
   end
 
   def set_species
