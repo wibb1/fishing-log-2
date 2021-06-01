@@ -36,14 +36,8 @@ class RecordsController < ApplicationController
         create_params['datetime(4i)'],
         create_params['datetime(5i)'],
       )
-
-    @record_new = Record.new
-    @record_new.name = create_params['name']
-    @record_new.success = create_params['success']
-    @record_new.body = create_params['body']
-    @record_new.latitude = create_params['latitude']
+    @record_new = Record.new(create_params)
     @record_new.latitude *= -1 if create_params['latitude_direction']=="S"
-    @record_new.longitude = create_params['longitude']
     @record_new.longitude *= -1 if create_params['longitude_direction']=="W"
     @record_new.datetime = time
     @record_new.date = time.strftime('%Y-%m-%dT%H:%M:%S%z')
