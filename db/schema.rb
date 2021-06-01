@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_30_182259) do
+ActiveRecord::Schema.define(version: 2021_05_31_224837) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,20 +75,17 @@ ActiveRecord::Schema.define(version: 2021_05_30_182259) do
     t.text "windWaveHeight", default: "NA"
     t.text "windWavePeriod", default: "NA"
     t.integer "success", default: 0, null: false
+    t.bigint "species_id"
+    t.index ["species_id"], name: "index_records_on_species_id"
     t.index ["user_id"], name: "index_records_on_user_id"
-  end
-
-  create_table "records_species", id: false, force: :cascade do |t|
-    t.bigint "species_id", null: false
-    t.bigint "record_id", null: false
-    t.index ["record_id", "species_id"], name: "index_records_species_on_record_id_and_species_id"
-    t.index ["species_id", "record_id"], name: "index_records_species_on_species_id_and_record_id"
   end
 
   create_table "species", force: :cascade do |t|
     t.string "common_name", null: false
     t.string "scientific_name", null: false
     t.string "shallow_depth", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "deep_depth", null: false
   end
 

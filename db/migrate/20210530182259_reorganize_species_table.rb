@@ -5,6 +5,6 @@ class ReorganizeSpeciesTable < ActiveRecord::Migration[5.2]
     remove_column :species, :legal_size
     remove_column :species, :season_dates
     remove_column :species, :bag_limits
-    add_column :species, :timestamps, null: false
+
   end
 end
