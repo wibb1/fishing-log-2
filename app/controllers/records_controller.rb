@@ -2,7 +2,8 @@ class RecordsController < ApplicationController
   require 'date'
   require './lib/apis/get_api_data.rb'
 
-before_action :authenticate_user!
+  before_action :authenticate_user!
+  before_action :set_species, only: [:new, :update, :create, :edit]
 
   def new
     @record_new = Record.new
@@ -36,14 +37,8 @@ before_action :authenticate_user!
         create_params['datetime(4i)'],
         create_params['datetime(5i)'],
       )
-
-    @record_new = Record.new
-    @record_new.name = create_params['name']
-    @record_new.success = create_params['success']
-    @record_new.body = create_params['body']
-    @record_new.latitude = create_params['latitude']
+    @record_new = Record.new(create_params)
     @record_new.latitude *= -1 if create_params['latitude_direction']=="S"
-    @record_new.longitude = create_params['longitude']
     @record_new.longitude *= -1 if create_params['longitude_direction']=="W"
     @record_new.datetime = time
     @record_new.date = time.strftime('%Y-%m-%dT%H:%M:%S%z')
@@ -85,11 +80,14 @@ before_action :authenticate_user!
   def create_params
     params
       .require(:record)
-      .permit(:name, :success, :body, :latitude, :latitude_direction, :longitude, :longitude_direction, :datetime)
+      .permit(:name, :success, :body, :latitude, :latitude_direction, :longitude, :longitude_direction, :datetime, :species_id)
   end
 
   def update_params
-    params.require(:record).permit(:name, :success, :body)
+    params.require(:record).permit(:name, :success, :body, :species_id)
   end
 
+  def set_species
+    @species_all = Species.all.sort_by(&:common_name)
+  end
 end

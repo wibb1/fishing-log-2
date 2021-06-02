@@ -3,9 +3,11 @@ require 'rails_helper'
 RSpec.describe Api::V1::RecordsController, type: :controller do
   describe "#GET#Index" do
     let!(:user1) {FactoryBot.create(:user)}
-    let!(:record1) {FactoryBot.create(:record, user: user1)}
+    let!(:species1) {FactoryBot.create(:species)}
+    let!(:record1) {FactoryBot.create(:record, user: user1, species: species1)}
     let!(:user2) {FactoryBot.create(:user)}
-    let!(:record2) {FactoryBot.create(:record, user: user2)}
+    let!(:species2) {FactoryBot.create(:species)}
+    let!(:record2) {FactoryBot.create(:record, user: user2, species: species2)}
 
     it "returns a status of 200 - records_controller - line 42" do
       sign_in user1
@@ -30,9 +32,11 @@ end
 RSpec.describe Api::V1::RecordsController, type: :controller do
   describe "#GET#Show" do
     let!(:user1) {FactoryBot.create(:user)}
-    let!(:record1) {FactoryBot.create(:record, user: user1)}
+    let!(:species1) {FactoryBot.create(:species)}
+    let!(:record1) {FactoryBot.create(:record, user: user1, species: species1)}
     let!(:user2) {FactoryBot.create(:user)}
-    let!(:record2) {FactoryBot.create(:record, user: user2)}
+    let!(:species2) {FactoryBot.create(:species)}
+    let!(:record2) {FactoryBot.create(:record, user: user2, species: species2)}
 
     it "returns a status of 200 - records_controller_spec" do
       sign_in user1

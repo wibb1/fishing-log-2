@@ -59,5 +59,5 @@ class Record < ApplicationRecord
                         :currentSpeed
 
   belongs_to :user
-  has_and_belongs_to_many :species
+  belongs_to :species
 end

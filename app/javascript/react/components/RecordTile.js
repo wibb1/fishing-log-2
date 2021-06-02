@@ -29,7 +29,8 @@ const RecordTile = ({
 	moonFraction,
 	moonPhase,
 	sunrise,
-	sunset
+	sunset,
+  species
 }) => {
 	const success_color = (success) => {
 		let success_color;
@@ -65,7 +66,7 @@ const RecordTile = ({
 								<div className="column">
 									<div className="box">
 										<p className="subtitle is-size-4 is-5-touch has-text-weight-b">
-											<strong className="">Whats on the menu:</strong> ":species:"
+											<strong className="">Whats on the menu:</strong> {species}
 										</p>
 									</div>
 								</div>
