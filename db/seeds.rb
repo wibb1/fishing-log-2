@@ -30,37 +30,26 @@ species14 = Species.create!(common_name: "Pollock", scientific_name: "Pollachius
 
 species15 = Species.create!(common_name: "Scup", scientific_name: "Stenotomus chrysops", shallow_depth: "330", deep_depth: "410")
 
-species17 = Species.create!(common_name: "Redfish", scientific_name: "Morone saxatilis", shallow_depth: "0", deep_depth: "30")
+species17 = Species.create!(common_name: "Redfish", scientific_name: "Lesiostomus xanthurus", shallow_depth: "0", deep_depth: "30")
 
-species19 = Species.create!(common_name: "Spiney Dogfish", scientific_name: "Morone saxatilis", shallow_depth: "0", deep_depth: "2000")
+species19 = Species.create!(common_name: "Spiney Dogfish", scientific_name: "Squalus acanthias", shallow_depth: "0", deep_depth: "2000")
 
-species20 = Species.create!(common_name: "Striped Bass", scientific_name: "Morone saxatilis", shallow_depth: "0", deep_depth: "100")
+species20 = Species.create!(common_name: "False Albacore", scientific_name: "Euthynnus alletteratus", shallow_depth: "0", deep_depth: "300")
 
-species21 = Species.create!(common_name: "Tautog (blackfish)", scientific_name: "Morone saxatilis", shallow_depth: "0", deep_depth: "250")
+species21 = Species.create!(common_name: "Tautog (blackfish)", scientific_name: "Tautoga onitis", shallow_depth: "0", deep_depth: "250")
 
-species23 = Species.create!(common_name: "Windowpane", scientific_name: "Morone saxatilis", shallow_depth: "0", deep_depth: "250")
+species23 = Species.create!(common_name: "Windowpane", scientific_name: "Scophthalmus aquosus", shallow_depth: "0", deep_depth: "250")
 
-species24 = Species.create!(common_name: "Winter Flounder", scientific_name: "Morone saxatilis", shallow_depth: "0", deep_depth: "240")
+species24 = Species.create!(common_name: "Winter Flounder", scientific_name: "Pseudopleuronectes americanus", shallow_depth: "0", deep_depth: "240")
 
-species25 = Species.create!(common_name: "Wolffish", scientific_name: "Morone saxatilis", shallow_depth: "70", deep_depth: "1640")
+species25 = Species.create!(common_name: "Wolffish", scientific_name: "Anarhichas lupus", shallow_depth: "70", deep_depth: "1640")
 
-species26 = Species.create!(common_name: "Yellowtail Flounder", scientific_name: "Morone saxatilis", shallow_depth: "0", deep_depth: "0")
+species26 = Species.create!(common_name: "Yellowtail Flounder", scientific_name: "Pleuronectes ferruginea", shallow_depth: "0", deep_depth: "0")
 
 species27 = Species.create!(common_name: "Bonito", scientific_name: "Sarda sarda", shallow_depth: "0", deep_depth: "300")
-
-species28 = Species.create!(common_name: "False Albacore", scientific_name: "Euthynnus alletteratus", shallow_depth: "0", deep_depth: "300")
 
 user2 = User.create!(email: "me@aol.com", password: "123456", first_name: "me", last_name: "you", user_name: "them", admin: false);
 
 record1 = Record.create!(name: "first record", success: "good", user_id: User.first.id, body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", latitude: 41.8, longitude: -70.8, date: Date.new(2020,8,20).to_s, time: Time.new(2020,8,20,9,45).to_s, datetime: Time.new(2020,8,20,9,45), js_date: Time.new(2020,8,20,9,45).to_f * 1000, species_id: species11.id)
 
 record1 = Record.create!(name: "first record", success: "good", user_id: User.first.id, body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", latitude: 41.8, longitude: -70.8, date: Date.new(2020,8,20).to_s, time: Time.new(2020,8,20,9,45).to_s, datetime: Time.new(2020,8,20,9,45), js_date: Time.new(2020,8,20,9,45).to_f * 1000, species_id: species3.id)
-
-#*** 
-# NOTE: Run this code to change the success column from string to enum
-# Code only needs to be done once
-#***
-# Record.all.each do |entry|
-#   entry.success = %w(Good, Bad, Meh).index(entry.old_success)
-#   entry.save!
-# end
