@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const ShowTile = ({ record }) => {
+const ShowTile = ({ record, species }) => {
 
 	const success_color = (success) => {
 		let success_color;
@@ -61,7 +61,7 @@ const ShowTile = ({ record }) => {
 												<tbody>
 													<tr>
 														<td>Species</td>
-														<td>":record.species:"</td>
+														<td>{species.common_name}</td>
 														<td></td>
 													</tr>
 													<tr>

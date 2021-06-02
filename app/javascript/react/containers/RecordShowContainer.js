@@ -3,6 +3,7 @@ import ShowTile from '../components/ShowTile';
 
 const RecordShowContainer = (props) => {
 	const [recordState, setRecordState] = useState({});
+  const [speciesState, setSpeciesState] = useState({})
 
 	const recordId = props.match.params.id;
 
@@ -22,7 +23,8 @@ const RecordShowContainer = (props) => {
 			.then((response) => response.json())
 			.then((body) => {
 				
-				setRecordState(body.record)
+				setRecordState(body.record);
+        setSpeciesState(body.record.species)
 				})
 			.catch((error) => console.error(`Error in fetch: ${error.message}`));
 	}, []);
@@ -31,6 +33,7 @@ const RecordShowContainer = (props) => {
 	return (  
 	<ShowTile
 		record={recordState}
+    species={speciesState}
 	/>
 	);
 };
