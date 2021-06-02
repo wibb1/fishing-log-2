@@ -3,6 +3,5 @@ class Species < ApplicationRecord
                         :scientific_name,
                         :shallow_depth,
                         :deep_depth
-
-  has_and_belongs_to_many :records
+  has_many :records
 end
