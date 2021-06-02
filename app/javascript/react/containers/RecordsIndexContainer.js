@@ -4,7 +4,6 @@ import RecordTile from '../components/RecordTile';
 
 const RecordsIndexContainer = (props) => {
 	const [records, setRecord] = useState([]);
-
 	const [user, setUser] = useState([]);
 
 	useEffect(() => {
@@ -59,6 +58,7 @@ const RecordsIndexContainer = (props) => {
 				moonPhase={record.moonPhase}
 				sunrise={record.sunrise}
 				sunset={record.sunset}
+        species={record.species.common_name}
 			/>
 		);
 	});
