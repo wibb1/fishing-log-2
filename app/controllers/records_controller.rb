@@ -88,6 +88,6 @@ class RecordsController < ApplicationController
   end
 
   def set_species
-    @species_all = Species.all
+    @species_all = Species.all.sort_by(&:common_name)
   end
 end
