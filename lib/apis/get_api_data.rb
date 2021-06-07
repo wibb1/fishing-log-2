@@ -14,14 +14,15 @@ module Apis
         end
 
         def format_data(data)
+          
           distance_short = %w[
             seaLevel
             swellHeight
             secondarySwellHeight
             waveHeight
-            waveHeight
             windWaveHeight
           ]
+          
           distance_short.each do |short|
             data[short] = data[short].nil? ? 'NA' : distance_ft(data[short])
           end
@@ -42,6 +43,7 @@ module Apis
           end
 
           string = %w[
+            cloudCover
             humidity
             currentDirection
             swellDirection
@@ -49,10 +51,10 @@ module Apis
             secondarySwellDirection
             secondarySwellPeriod
             waveDirection
-            secondarySwellPeriod
-            waveDirection
             wavePeriod
+            windDirection
             windWavePeriod
+            windWaveDirection
           ]
           string.each do |string|
             data[string] = data[string].nil? ? 'NA' : data[string].to_s
@@ -61,16 +63,6 @@ module Apis
           speed = %w[gust windSpeed currentSpeed]
           speed.each do |speed|
             data[speed] = data[speed].nil? ? 'NA' : speed_mph(data[speed])
-          end
-
-          round_0_digits = %w[
-            cloudCover
-            windDirection
-            windWaveDirection
-            waveDirection
-          ]
-          round_0_digits.each do |round_0|
-            data[round_0] = data[round_0].nil? ? 'NA' : round0(data[round_0])
           end
 
           distance_long = %w[visibility]
