@@ -14,34 +14,6 @@ module Apis
         end
 
         def format_data(data)
-          data['cloudCover'] =
-            data['cloudCover'].nil? ? 'NA' : round0(data['cloudCover'])
-          data['windDirection'] =
-            data['windDirection'].nil? ? 'NA' : round0(data['windDirection'])
-          data['windWaveDirection'] = data['windWaveDirection'].nil? ? 'NA' 
-            : round0(data['windWaveDirection'])
-          data['waveDirection'] =
-            data['waveDirection'].nil? ? 'NA' : round0(data['waveDirection'])
-
-          data['moonFraction'] =
-            data['moonFraction'].nil? ? 'NA' : round2(data['moonFraction'])
-
-          data['visibility'] =
-            data['visibility'].nil? ? 'NA' : distance_mi(data['visibility'])
-
-          data['airTemperature'] =
-            data['airTemperature'].nil? ? 'NA' : temp_F(data['airTemperature'])
-
-          data['pressure'] =
-            data['pressure'].nil? ? 'NA' : pressure_inHg(data['pressure'])
-
-          data['gust'] = data['gust'].nil? ? 'NA' : speed_mph(data['gust'])
-          data['windSpeed'] =
-            data['windSpeed'].nil? ? 'NA' : speed_mph(data['windSpeed'])
-          data['currentSpeed'] =
-            data['currentSpeed'].nil? ? 'NA' : speed_mph(data['currentSpeed'])
-
-
           distance_short = %w[
             seaLevel
             swellHeight
@@ -50,6 +22,10 @@ module Apis
             waveHeight
             windWaveHeight
           ]
+          distance_short.each do |short|
+            data[short] = data[short].nil? ? 'NA' : distance_ft(data[short])
+          end
+
           time = %w[
             astronomicalDawn
             astronomicalDusk
@@ -61,6 +37,10 @@ module Apis
             sunset
             time
           ]
+          time.each do |time|
+            data[time] = data[time].nil? ? 'NA' : format_time(data[time])
+          end
+
           string = %w[
             humidity
             currentDirection
@@ -74,15 +54,44 @@ module Apis
             wavePeriod
             windWavePeriod
           ]
+          string.each do |string|
+            data[string] = data[string].nil? ? 'NA' : data[string].to_s
+          end
 
-          data.each_key do |key|
-            if string.include?(key)
-              data[key] = data[key].nil? ? 'NA' : data[key].to_s
-            elsif time.include?(key)
-              data[key] = data[key].nil? ? 'NA' : format_time(data[key])
-            elsif distance_short.include?(key)
-              data[key] = data[key].nil? ? 'NA' : distance_ft(data[key])
-            end
+          speed = %w[gust windSpeed currentSpeed]
+          speed.each do |speed|
+            data[speed] = data[speed].nil? ? 'NA' : speed_mph(data[speed])
+          end
+
+          round_0_digits = %w[
+            cloudCover
+            windDirection
+            windWaveDirection
+            waveDirection
+          ]
+          round_0_digits.each do |round_0|
+            data[round_0] = data[round_0].nil? ? 'NA' : round0(data[round_0])
+          end
+
+          distance_long = %w[visibility]
+          distance_long.each do |long|
+            data[long] = data[long].nil? ? 'NA' : distance_mi(data[long])
+          end
+
+          temperature = %w[airTemperature]
+          temperature.each do |temp|
+            data[temp] = data[temp].nil? ? 'NA' : temp_F(data[temp])
+          end
+
+          round_2_digits = %w[moonFraction]
+          round_2_digits.each do |round|
+            data[round] = data[round].nil? ? 'NA' : round2(data[round])
+          end
+
+          pressure = %w[pressure]
+          pressure.each do |pressure|
+            data[pressure] =
+              data[pressure].nil? ? 'NA' : pressure_inHg(data[pressure])
           end
         end
 
@@ -123,14 +132,18 @@ module Apis
 
         def get_api_data
           client = Apis::StormglassApi::V2::Client.new(@parsed_time, @lat, @lng)
-          hash = client.obtain_data 
+          hash = client.obtain_data
           output = {}
-          
+
           #weather
           temp_hash =
             client.weather_request.split(',').to_h { |key| [key, nil] }
           if hash.dig('weather', 'errors')
-            temp_hash = {'weather' => {'errors'=> hash['weather']['errors']['key']}}
+            temp_hash = {
+              'weather' => {
+                'errors' => hash['weather']['errors']['key'],
+              },
+            }
           else
             temp_hash.each_key do |key|
               if hash['weather']['hours'][0].include?(key)
@@ -143,7 +156,11 @@ module Apis
           #astro
           temp_hash = client.astro_request.split(',').to_h { |key| [key, nil] }
           if hash.dig('astro', 'errors')
-            temp_hash = {'astro' => {'errors'=> hash['astro']['errors']['key']}}
+            temp_hash = {
+              'astro' => {
+                'errors' => hash['astro']['errors']['key'],
+              },
+            }
           else
             temp_hash.each_key do |key|
               if hash['astro']['data'][0].include?(key)
@@ -152,12 +169,14 @@ module Apis
             end
             temp_hash['moonPhase'] =
               hash['astro']['data'][0]['moonPhase']['closest']['text']
-          end  
+          end
           output.merge!(temp_hash)
 
           #tide
           if hash.dig('tide', 'errors')
-            output.merge!({'tide' => {'errors' => hash['astro']['errors']['key']}})
+            output.merge!(
+              { 'tide' => { 'errors' => hash['astro']['errors']['key'] } },
+            )
           else
             i = 0
             tide_data = hash['tide']['data']
@@ -171,8 +190,9 @@ module Apis
             end
           end
 
-          unless hash.dig('weather', 'errors') || hash.dig('astro', 'errors') || hash.dig('tide', 'errors')
-            format_data(output) 
+          unless hash.dig('weather', 'errors') || hash.dig('astro', 'errors') ||
+                   hash.dig('tide', 'errors')
+            format_data(output)
             output.transform_values! { |value| value.presence || 'NA' }
           end
           return output
