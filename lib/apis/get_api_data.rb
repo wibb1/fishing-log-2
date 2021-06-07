@@ -14,32 +14,6 @@ module Apis
         end
 
         def format_data(data)
-          # data['cloudCover'] =
-          #   data['cloudCover'].nil? ? 'NA' : round0(data['cloudCover'])
-          # data['windDirection'] =
-          #   data['windDirection'].nil? ? 'NA' : round0(data['windDirection'])
-          # data['windWaveDirection'] = data['windWaveDirection'].nil? ? 'NA'
-          #   : round0(data['windWaveDirection'])
-          # data['waveDirection'] =
-          #   data['waveDirection'].nil? ? 'NA' : round0(data['waveDirection'])
-
-          # data['moonFraction'] =
-          #   data['moonFraction'].nil? ? 'NA' : round2(data['moonFraction'])
-
-          # data['visibility'] =
-          #   data['visibility'].nil? ? 'NA' : distance_mi(data['visibility'])
-
-          # data['airTemperature'] =
-          #   data['airTemperature'].nil? ? 'NA' : temp_F(data['airTemperature'])
-
-          # data['pressure'] =
-          #   data['pressure'].nil? ? 'NA' : pressure_inHg(data['pressure'])
-
-          # data['gust'] = data['gust'].nil? ? 'NA' : speed_mph(data['gust'])
-          # data['windSpeed'] =
-          #   data['windSpeed'].nil? ? 'NA' : speed_mph(data['windSpeed'])
-          # data['currentSpeed'] =
-          #   data['currentSpeed'].nil? ? 'NA' : speed_mph(data['currentSpeed'])
           distance_short = %w[
             seaLevel
             swellHeight
@@ -116,24 +90,9 @@ module Apis
 
           pressure = %w[pressure]
           pressure.each do |pressure|
-            data[pressure] = data[pressure].nil? ? 'NA' : pressure_inHg(data[pressure])
+            data[pressure] =
+              data[pressure].nil? ? 'NA' : pressure_inHg(data[pressure])
           end
-          binding.pry
-
-
-
-
-
-
-          # data.each_key do |key|
-          #   if string.include?(key)
-          #     data[key] = data[key].nil? ? 'NA' : data[key].to_s
-          #   elsif time.include?(key)
-          #     data[key] = data[key].nil? ? 'NA' : format_time(data[key])
-          #   elsif distance_short.include?(key)
-          #     data[key] = data[key].nil? ? 'NA' : distance_ft(data[key])
-          #   end
-          # end
         end
 
         def distance_mi(km)
