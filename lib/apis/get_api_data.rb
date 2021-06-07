@@ -41,6 +41,15 @@ module Apis
           data['currentSpeed'] =
             data['currentSpeed'].nil? ? 'NA' : speed_mph(data['currentSpeed'])
 
+          speed = %w[gust windSpeed currentSpeed]
+
+          temperature = %w[airTemperature]
+
+          round_2_digits = %w[moonFraction]
+
+          distance_long = %w[visibility]
+
+          round_0_digits = %w[cloudCover windDirection windWaveDirection waveDirection]
 
           distance_short = %w[
             seaLevel
@@ -74,7 +83,7 @@ module Apis
             wavePeriod
             windWavePeriod
           ]
-
+binding.pry
           data.each_key do |key|
             if string.include?(key)
               data[key] = data[key].nil? ? 'NA' : data[key].to_s
