@@ -87,6 +87,8 @@ class RecordsController < ApplicationController
     params.require(:record).permit(:name, :success, :body, :species_id)
   end
 
+  
+
   def set_species
     @species_all = Species.all.sort_by(&:common_name)
   end
