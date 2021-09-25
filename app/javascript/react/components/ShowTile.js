@@ -42,7 +42,7 @@ const ShowTile = ({ record, species }) => {
 							</div>
 						</div>
 					</div>
-					<div className="tile is-verticle">
+					<div className="tile is-vertical">
 						<div className="tile is-vertical">
 							<div className="tile">
 								<div className="tile is-parent is-vertical">
