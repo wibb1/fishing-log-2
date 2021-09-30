@@ -3,9 +3,11 @@ import TableHelper from "../../uxHelpers/TableHelper";
 
 const Tides = (props) => {
   return (
-    <div className="column m-2">
+    <article
+      className={`tile is-child notification ${props.successColor}`}
+    >
       <TableHelper
-        divClassName={"box center"}
+        divClassName={"box"}
         tableClassName={"table has-text-centered center"}
       >
         <tbody>
@@ -36,7 +38,7 @@ const Tides = (props) => {
           </tr>
         </tbody>
       </TableHelper>
-    </div>
+    </article>
   );
 };
 

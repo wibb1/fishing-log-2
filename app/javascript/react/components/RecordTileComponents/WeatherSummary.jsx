@@ -3,7 +3,8 @@ import TableHelper from '../../uxHelpers/TableHelper';
 
 const WeatherSummary = props => {
   return (
-    <div className="column">
+    <article className={`tile is-child notification ${props.successColor} column`}>
+
     <TableHelper divClassName={"box center"}
       tableClassName={"table has-text-centered center"}>
         <tbody>
@@ -34,7 +35,8 @@ const WeatherSummary = props => {
           </tr>
         </tbody>
       </TableHelper>
-  </div>
+
+  </article>
   )
 }
 export default WeatherSummary

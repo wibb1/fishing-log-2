@@ -3,7 +3,8 @@ import TableHelper from "../../uxHelpers/TableHelper";
 
 const MoonSunSummary = (props) => {
   return (
-    <div className="column is-centered">
+    <article className={`tile is-child notification ${props.successColor} column`}>
+    
       <TableHelper divClassName={"box center"}
         tableClassName={"table has-text-centered center"}>
           <tbody>
@@ -29,7 +30,8 @@ const MoonSunSummary = (props) => {
             </tr>
           </tbody>
         </TableHelper>
-    </div>
+ 
+    </article>
   );
 };
 

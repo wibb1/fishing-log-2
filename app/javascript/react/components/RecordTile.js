@@ -47,7 +47,7 @@ const RecordTile = ({
               className={`tile is-child notification ${success_color} is-12`}
             >
               <div className="box">
-                <div className="columns">
+                <div className="columns is-centered">
                   <div className="column">
                     <p className="title is-size-3 is-size-4-touch">{name}</p>
                   </div>
@@ -58,7 +58,7 @@ const RecordTile = ({
                   </div>
                 </div>
               </div>
-              <div className="columns">
+              <div className="columns is-centered">
                 <div className="column">
                   <div className="box">
                     <p className="subtitle is-size-4 is-5-touch has-text-weight-b">
@@ -71,8 +71,9 @@ const RecordTile = ({
               <div className="box">
                 <p className="is-6">{body}</p>
               </div>
-              <div className="columns">
+              <div className="columns is-centered">
                 <Tides
+                  successColor={success_color}
                   first_type={first_type}
                   first_time={first_time}
                   first_height={first_height}
@@ -87,12 +88,14 @@ const RecordTile = ({
                   fourth_type={fourth_type}
                 />
                 <WeatherSummary
+                  successColor={success_color}
                   pressure={pressure}
                   humidity={humidity}
                   windDirection={windDirection}
                   windSpeed={windSpeed}
                 />
                 <MoonSunSummary
+                  successColor={success_color}
                   moonFraction={moonFraction}
                   moonPhase={moonPhase}
                   sunrise={sunrise}
