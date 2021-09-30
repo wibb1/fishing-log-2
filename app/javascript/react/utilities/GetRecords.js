@@ -1,5 +1,5 @@
-const getRecords = (location) => {
-  return fetch(location)
+const getRecords = () => {
+  return fetch('api/v1/records')
     .then((response) => {
       if (response.ok) {
         return response;
@@ -8,8 +8,8 @@ const getRecords = (location) => {
         throw new Error(errorMessage);
       }
     })
-    .then((response) => response.json())
-    .catch((error) => {
+    .then(response => response.json())
+    .catch(error => {
       console.error(`Error in Fetch: ${error.message}`);
     });
 };
