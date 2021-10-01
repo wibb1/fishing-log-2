@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import MoonTable from "./ShowTileComponents/MoonTable";
 import successColor from "../utilities/SuccessColor";
 import SunTable from "./ShowTileComponents/SunTable";
