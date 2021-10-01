@@ -1,5 +1,5 @@
 const getRecords = () => {
-  return fetch('api/v1/records')
+  return fetch(`/api/v1/records`)
     .then((response) => {
       if (response.ok) {
         return response;
@@ -8,10 +8,8 @@ const getRecords = () => {
         throw new Error(errorMessage);
       }
     })
-    .then(response => response.json())
-    .catch(error => {
-      console.error(`Error in Fetch: ${error.message}`);
-    });
+    .then((response) => response.json())
+    .catch((error) => console.error(`Error in Fetch: ${error.message}`));
 };
 
 export default getRecords;
