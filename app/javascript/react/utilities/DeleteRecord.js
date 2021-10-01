@@ -1,7 +1,7 @@
 
 const deleteRecord = (id, payload) => {
   return (
-    fetch(`/api/v1/Records/${id}`, {
+    fetch(`/api/v1/records/${id}`, {
       credentials: "same-origin",
       method: "DELETE",
       headers: {
