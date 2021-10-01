@@ -5,7 +5,7 @@ import patchRecord from './PatchRecord'
 import postRecord from './PostRecord'
 
 
-class GetAllAPI {
+class FishingLogAPI {
   static getRecords() {
     return getRecords()
   }
@@ -27,4 +27,4 @@ class GetAllAPI {
   }
 }
 
-export default GetAllAPI
+export default FishingLogAPI
