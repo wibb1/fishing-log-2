@@ -1,15 +1,14 @@
-const getRecords = () => {
-  return fetch(`/api/v1/records`)
-    .then((response) => {
-      if (response.ok) {
-        return response;
-      } else {
-        let errorMessage = `${response.status} (${response.statusText})`;
-        throw new Error(errorMessage);
-      }
-    })
-    .then((response) => response.json())
-    .catch((error) => console.error(`Error in Fetch: ${error.message}`));
+const getRecords = async () => {
+  try {
+    const response = await fetch(`/api/v1/records`);
+    if (!response.ok) {
+      const errorMessage = `${response.status} (${response.statusText})`;
+      throw new Error(errorMessage);
+    }
+    return response.json();
+  } catch (error) {
+    console.error(`Error in fetch: ${error}`);
+  }
 };
 
 export default getRecords;
