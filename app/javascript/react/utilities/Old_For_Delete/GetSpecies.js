@@ -1,6 +1,6 @@
-const getRecord = async (id) => {
+const getSpecies = async () => {
   try{
-    const response = await fetch(`/api/v1/records/${id}`)
+    const response = await fetch(`/api/v1/species`)
     if (!response.ok) {
       const errorMessage = `${response.status} (${response.statusText})`;
       throw(new Error(errorMessage));
@@ -11,4 +11,4 @@ const getRecord = async (id) => {
   }
 };
 
-export default getRecord;
+export default getSpecies;

@@ -1,22 +1,24 @@
-const postRecord = async (record) => {
+import getURL from "./GetURL";
+
+const patchData = async (dataType, id, payload) => {
   try {
-    const response = await fetch("/api/v1/records", {
+    const response = await fetch(getURL(dataType, id), {
       credentials: "same-origin",
-      method: "POST",
+      method: "PATCH",
       headers: {
         "Content-type": "application/json",
         Accept: "application/json",
       },
-      body: JSON.stringify(record),
+      body: JSON.stringify(payload),
     });
     if (!response.ok) {
-    
       const errorMessage = `${response.status} (${response.statusText})`;
       throw new Error(errorMessage);
-    }return response.json();
+    }
+    return response.json();
   } catch (error) {
     console.error(`Error in fetch: ${error}`);
   }
 };
 
-export default postRecord;
+export default patchData;

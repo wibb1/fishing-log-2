@@ -8,7 +8,7 @@ const RecordsIndexContainer = (props) => {
   const [user, setUser] = useState([]);
 
   useEffect(() => {
-    FishingLogAPI.getRecords().then((response) => {
+    FishingLogAPI.getData('records').then((response) => {
       setRecord(response.records.records);
       setUser(response.user);
     });

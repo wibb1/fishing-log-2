@@ -4,26 +4,40 @@ import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import ErrorList from "../components/ErrorList";
 import _ from "lodash";
+
 import Options from "../components/Options";
 import ToTitleCase from "../utilities/ToTitleCase";
-import fetchRecord from "../utilities/GetRecord";
+import FishingLogAPI from "../utilities/FishingLogAPI";
 
 const RecordFormContainer = (props) => {
   const [getRecord, setRecord] = useState({
     name: "",
     latitude: "",
-    latitudeDirection: "",
+    latitudeDirection: "N",
     longitude: "",
-    longitudeDirection: "",
-    dateTime: "",
-    species: "",
-    success: "",
+    longitudeDirection: "E",
+    datetime: "",
+    species: "American eel",
+    success: "Good",
     body: "",
   });
+  const [getSpecies, setSpecies] = useState([]);
+  const [getSuccesses, setSuccesses] = useState([
+    { name: "Good", id: 0 },
+    { name: "Bad", id: 1 },
+    { name: "Meh", id: 2 },
+  ]);
   const [errors, setErrors] = useState({});
+  const [getUser, setUser] = useState({});
 
   useEffect(() => {
-    fetchRecord();
+    FishingLogAPI.getData("records").then((records) => {
+      // console.log(response);
+    });
+
+    FishingLogAPI.getData("all_species").then((species) => {
+      setSpecies(species);
+    });
   }, []);
 
   const validForSubmission = () => {
@@ -34,7 +48,7 @@ const RecordFormContainer = (props) => {
       "latitudeDirection",
       "longitude",
       "longitudeDirection",
-      "dateTime",
+      // "datetime",
       "species",
       "success",
       "body",
@@ -60,7 +74,7 @@ const RecordFormContainer = (props) => {
     });
   };
 
-  const onSubmitHandler = async (event) => {
+  const onSubmitHandler = (event) => {
     event.preventDefault();
     if (validForSubmission()) {
       addNewRecord(getRecord);
@@ -68,31 +82,23 @@ const RecordFormContainer = (props) => {
   };
 
   const addNewRecord = (newRecord) => {
-    fetch(`/api/v1/records`, {
-      method: "POST",
-      credentials: "same-origin",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newRecord),
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response;
-        } else {
-          let errorMessage = `${response.status} ${response.statusText}`,
-            error = new Error(errorMessage);
-          throw error;
-        }
-      })
-      .then((body) => {
-        setShouldRedirect(true);
-      })
-      .catch((error) => {
-        console.error(`Error in fetch: ${error.message}`);
-        setErrors(...errors, { "Error in fetch": error.message });
-      });
+    FishingLogAPI.postData("record", newRecord).then(() => {
+      setShouldRedirect(true);
+    });
+  };
+
+  const clearForm = () => {
+    setRecord({
+      name: "",
+      latitude: "",
+      latitudeDirection: "",
+      longitude: "",
+      longitudeDirection: "",
+      datetime: "",
+      species: "",
+      success: "",
+      body: "",
+    });
   };
 
   if (shouldRedirect) {
@@ -134,35 +140,51 @@ const RecordFormContainer = (props) => {
             <label className="label" htmlFor="species">
               Select the Species:
               <div className="control">
-                <select
-                  className="select"
-                  type="select"
-                  id="species"
-                  name="species"
-                  placeholder=""
-                  onChange={handleInputChange}
-                  value={getRecord.species}
-                >
-                  <Options options={getRecord.species} />
-                </select>
+                <div className="select">
+                  <select
+                    className="select"
+                    type="select"
+                    id="species"
+                    name="species"
+                    placeholder=""
+                    onChange={handleInputChange}
+                    value={getRecord.species}
+                  >
+                    <Options
+                      options={getSpecies.map((species) => ({
+                        name: species.common_name,
+                        id: species.id,
+                      }))}
+                    />
+                  </select>
+                </div>{" "}
               </div>
             </label>
           </div>
 
           <div className="field">
             <label className="label" htmlFor="success">
+              How was your day?
               <div className="control">
-                <select
-                  className="select"
-                  type="select"
-                  id="species"
-                  name="species"
-                  placeholder=""
-                  onChange={handleInputChange}
-                  value={getRecord.species}
-                >
-                  <Options options={getRecord.successes} />
-                </select>
+                <div className="select">
+                  <select
+                    className="select"
+                    type="select"
+                    id="success"
+                    name="success"
+                    placeholder=""
+                    onChange={handleInputChange}
+                    value={getRecord.success}
+                  >
+                    <Options
+                      options={[
+                        { name: "Good", id: 0 },
+                        { name: "Bad", id: 1 },
+                        { name: "Meh", id: 2 },
+                      ]}
+                    />
+                  </select>
+                </div>{" "}
               </div>
             </label>
           </div>
@@ -171,12 +193,12 @@ const RecordFormContainer = (props) => {
             <label className="label" htmlFor="body">
               Spot Description:
               <div className="control">
-                <input
+                <textarea
                   className="input"
                   type="textarea"
-                  id="name"
-                  name="name"
-                  placeholder="Spot Name"
+                  id="body"
+                  name="body"
+                  placeholder="Enter text here with a good description of your day"
                   onChange={handleInputChange}
                   value={getRecord.body}
                 />
@@ -192,9 +214,37 @@ const RecordFormContainer = (props) => {
                   type="tel"
                   pattern="[0-9*]"
                   className="input"
-                  placeholder="Typically 41.3 to 41.8"
+                  id='latitude'
+                  name='latitude'
+                  placeholder="Between 0 and 90"
+                  onChange={handleInputChange}
                   value={getRecord.latitude}
                 ></input>
+              </div>
+            </label>
+          </div>
+
+          <div className="field">
+            <label htmlFor="latitudeDirection" className="label">
+              <div className="control">
+                <div className="select">
+                  <select
+                    className="select"
+                    type="select"
+                    id="latitudeDirection"
+                    name="latitudeDirection"
+                    placeholder=""
+                    onChange={handleInputChange}
+                    value={getRecord.latitudeDirection}
+                  >
+                    <Options
+                      options={[
+                        { name: "N", id: 0 },
+                        { name: "S", id: 1 },
+                      ]}
+                    />
+                  </select>
+                </div>
               </div>
             </label>
           </div>
@@ -204,22 +254,17 @@ const RecordFormContainer = (props) => {
               Longitude (in decimal format):
               <div className="control">
                 <input
-                  type="tel"
-                  pattern="[0-9*]"
+                  type="number"
+                  step='0.0001'
+                  min='0'
+                  max='180'
+                  name='longitude'
+                  id='longitude'
                   value={getRecord.longitude}
-                  placeholder="Typically -70 to -70.6"
+                  placeholder="Between 0 and 180"
+                  onChange={handleInputChange}
                   className="input"
                 />
-              </div>
-            </label>
-          </div>
-
-          <div className="field">
-            <label htmlFor="latitudeDirection" className="label">
-              <div className="control">
-                <div className="select">
-                  <Options options={["N", "S"]} />
-                </div>
               </div>
             </label>
           </div>
@@ -228,8 +273,21 @@ const RecordFormContainer = (props) => {
             <label htmlFor="longitudeDirection" className="label">
               <div className="control">
                 <div className="select">
-                  <select htmlFor="longitudeDirection" className="select">
-                    <Options options={["E", "W"]} />
+                  <select
+                    className="select"
+                    type="select"
+                    id="longitudeDirection"
+                    name="longitudeDirection"
+                    placeholder=""
+                    onChange={handleInputChange}
+                    value={getRecord.longitudeDirection}
+                  >
+                    <Options
+                      options={[
+                        { name: "E", id: 0 },
+                        { name: "W", id: 1 },
+                      ]}
+                    />
                   </select>
                 </div>
               </div>
@@ -241,10 +299,13 @@ const RecordFormContainer = (props) => {
               <div className="control">
                 <div className="datetime_select">
                   <select
-                    datetime_select
+                    type="datetime_select"
                     htmlFor="datetime"
+                    id="datetime"
+                    name='datetime'
                     note="need datetime picker"
                     className="select"
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
@@ -257,6 +318,12 @@ const RecordFormContainer = (props) => {
               className="button is-primary has-text-weight-bold"
               value="Submit"
             />
+            <button
+              className="button is-secondary has-text-weight-bold"
+              onClick={clearForm}
+            >
+              Clear
+            </button>
           </div>
         </form>
       </div>

@@ -1,10 +1,17 @@
-import React from "react";
+import React, {useState} from "react";
 import ToTitleCase from "../utilities/ToTitleCase";
 
 const Options = (props) => {
-    return props.options.map((option)=>{
-      return <option key={option} value={ToTitleCase(option)} label={option}/>
-    })
+  const capitalize = (option) => {
+    if (props.capitalize) {
+      return ToTitleCase(option);
+    } else {
+      return option;
+    }
+  };
+  return props.options.map((option) => {
+    return <option key={option.id} value={capitalize(option.name)}>{option.name}</option> ;
+  });
 };
 
-export default Options
+export default Options;

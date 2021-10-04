@@ -1,30 +1,31 @@
-import deleteRecord from './DeleteRecord'
-import getRecord from './GetRecord'
-import getRecords from './GetRecords'
-import patchRecord from './PatchRecord'
-import postRecord from './PostRecord'
-
+import getSpecies from './Old_For_Delete/GetSpecies'
+import getData from './GetData'
+import deleteData from './DeleteData'
+import postData from './PostData'
+import patchData from './PatchData'
 
 class FishingLogAPI {
-  static getRecords() {
-    return getRecords()
+
+  static patchData(dataType, id, payload){
+    return patchData(dataType, id, payload)
   }
 
-  static getRecord(id) {
-    return getRecord(id)
+  static postData(dataType, payload){
+    return postData(dataType, payload)
   }
 
-  static patchRecord(id, payload){
-    return patchRecord(id, payload)
+  static getSpecies(){
+    return getSpecies()
   }
 
-  static deleteRecord(id){
-    return deleteRecord(id)
+  static getData(dataType, id){
+    return getData(dataType, id)
   }
 
-  static postRecord(payload){
-    return postRecord(payload)
+  static deleteData(dataType, id){
+    return deleteData(dataType, id)
   }
+
 }
 
 export default FishingLogAPI

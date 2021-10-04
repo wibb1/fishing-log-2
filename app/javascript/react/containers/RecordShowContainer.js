@@ -9,7 +9,7 @@ const RecordShowContainer = (props) => {
   const recordId = props.match.params.id;
 
   useEffect(() => {
-    FishingLogAPI.getRecord(recordId).then((body) => {
+    FishingLogAPI.getData('record', recordId).then((body) => {
       setRecordState(body.record);
       setSpeciesState(body.record.species);
     });
