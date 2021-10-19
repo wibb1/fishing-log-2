@@ -66,13 +66,13 @@ const ShowTile = ({ record, species }) => {
 													</tr>
 													<tr>
 														<td>Latitude</td>
-														<td>{record.latitude}</td>
-														<td>N</td>
+														<td>{Math.abs(record.latitude)}</td>
+														<td>{record.latitude > 0 ? "N" : "S"}</td>
 													</tr>
 													<tr>
 														<td>Longitude</td>
-														<td>{record.longitude}</td>
-														<td>E</td>
+														<td>{Math.abs(record.longitude)}</td>
+														<td>{record.longitude > 0 ? "E" : "W"}</td>
 													</tr>
 												</tbody>
 											</table>
