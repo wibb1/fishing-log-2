@@ -10,7 +10,7 @@ const Options = (props) => {
     }
   };
   return props.options.map((option) => {
-    return <option key={option.id} value={capitalize(option.name)}>{option.name}</option> ;
+    return <option key={option.id} id={option.id} value={(option.name)}>{capitalize(option.name)}</option> ;
   });
 };
 
