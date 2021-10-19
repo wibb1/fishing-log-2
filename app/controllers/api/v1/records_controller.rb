@@ -18,15 +18,60 @@ class Api::V1::RecordsController < ApiController
   end
 
   def create
-    # needs to be updated for React
-    render json: { species: set_species, successes: set_successes }
-    binding.pry
     if current_user.nil?
       render json: { notice: 'Please login before submitting a record.' }
     else
-      record = Record.new(create_params)
+      new_params = create_params
+      new_params['success'] =
+        Record.successes[create_params['success'].downcase]
+      
+      @record_new = Record.new(new_params)
+      @record_new.latitude *= -1 if params['latitudDirection'] == 'S'
+      @record_new.longitude *= -1 if params['longitudeDirection'] == 'W'
+      @record_new.js_date = create_params['datetime'] 
+      new_datetime = Time.at(@record_new.js_date/1000.0)
+      @record_new.datetime = new_datetime
+      @record_new.date = new_datetime.strftime('%Y-%m-%dT%H:%M:%S%z')
+      @record_new.time = new_datetime.strftime('%H:%M')
+      
+      @record_new.user = current_user
+
+      parsed_time = Time.parse(@record_new.date)
+
+      response =
+        Apis::StormglassApi::V2::GetApiData.new(
+          parsed_time,
+          @record_new.latitude,
+          @record_new.longitude,
+        )
+      hash = response.get_api_data
+      if hash.dig('weather', 'errors') || hash.dig('astro', 'errors') ||
+           hash.dig('tide', 'errors')
+        api_errors_array =
+          %w[weather astro tide].map do |i|
+            "#{i.capitalize} request had an error: #{hash[i]['errors']}"
+          end
+        api_errors = api_errors_array.to_sentence
+        flash[:errors] = api_errors
+        puts "-----#{api_errors}-----"
+        render '/records/react/create'
+      else
+        @record_new.assign_attributes(hash)
+        if @record_new.save
+          puts '-----Record successfully saved-----'
+          render json: { record: @record }, status: 200
+        else
+          render json: {
+                   message: @record_new.errors.full_messages.to_sentence,
+                 },
+                 status: 500
+          puts "-----#{@record_new.errors.full_messages.to_sentence}-----"
+          render '/records/react/create'
+        end
+      end
     end
   end
+
 
   def update
     # needs to be updated for React
@@ -34,7 +79,7 @@ class Api::V1::RecordsController < ApiController
     if record.update(update_params)
       redirect_to "/records/react/#{@record.id}"
     else
-      render 'edit'
+      render "/records/react/#{@record.id}/edit"
     end
   end
 
@@ -54,16 +99,11 @@ class Api::V1::RecordsController < ApiController
       .permit(
         :name,
         :latitude,
-        :latitudeDirection,
         :longitude,
-        :longitudeDirection,
         :datetime,
-        :species,
+        :species_id,
         :success,
         :body,
-        :ApiController,
-        :action,
-        :record,
       )
   end
 

@@ -2,43 +2,36 @@
 
 import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
-import ErrorList from "../components/ErrorList";
 import _ from "lodash";
+import DatePicker from "react-datepicker";
 
+import ErrorList from "../components/ErrorList";
 import Options from "../components/Options";
 import ToTitleCase from "../utilities/ToTitleCase";
 import FishingLogAPI from "../utilities/FishingLogAPI";
 
 const RecordFormContainer = (props) => {
+  const [getSpecies, setSpecies] = useState([]);
+  const [errors, setErrors] = useState({});
+  const [getDatetime, setDatetime] = useState(new Date());
+
+  useEffect(() => {
+    FishingLogAPI.getData("all_species").then((response) => {
+      setSpecies(response.species);
+    });
+  }, []);
+
   const [getRecord, setRecord] = useState({
     name: "",
     latitude: "",
     latitudeDirection: "N",
     longitude: "",
-    longitudeDirection: "E",
-    datetime: "",
-    species: "American eel",
-    success: "Good",
+    longitudeDirection: "W",
+    datetime: Date.now(),
+    species_id: "1",
+    success: "good",
     body: "",
   });
-  const [getSpecies, setSpecies] = useState([]);
-  const [getSuccesses, setSuccesses] = useState([
-    { name: "Good", id: 0 },
-    { name: "Bad", id: 1 },
-    { name: "Meh", id: 2 },
-  ]);
-  const [errors, setErrors] = useState({});
-  const [getUser, setUser] = useState({});
-
-  useEffect(() => {
-    FishingLogAPI.getData("records").then((records) => {
-      // console.log(response);
-    });
-
-    FishingLogAPI.getData("all_species").then((species) => {
-      setSpecies(species);
-    });
-  }, []);
 
   const validForSubmission = () => {
     let submitErrors = {};
@@ -48,8 +41,8 @@ const RecordFormContainer = (props) => {
       "latitudeDirection",
       "longitude",
       "longitudeDirection",
-      // "datetime",
-      "species",
+      "datetime",
+      "species_id",
       "success",
       "body",
     ];
@@ -74,6 +67,14 @@ const RecordFormContainer = (props) => {
     });
   };
 
+  const handleIdChange = (event) => {
+    const index = event.currentTarget.selectedIndex;
+    const optionElement = event.currentTarget.childNodes[index];
+    const optionElementId = optionElement.getAttribute("id");
+
+    setRecord({ ...getRecord, [event.currentTarget.id]: optionElementId });
+  };
+
   const onSubmitHandler = (event) => {
     event.preventDefault();
     if (validForSubmission()) {
@@ -87,18 +88,20 @@ const RecordFormContainer = (props) => {
     });
   };
 
-  const clearForm = () => {
+  const clearForm = (event) => {
+    event.preventDefault()
     setRecord({
       name: "",
       latitude: "",
-      latitudeDirection: "",
+      latitudeDirection: "N",
       longitude: "",
-      longitudeDirection: "",
+      longitudeDirection: "E",
       datetime: "",
-      species: "",
-      success: "",
+      species_id: "1",
+      success: "0",
       body: "",
     });
+    setErrors({})
   };
 
   if (shouldRedirect) {
@@ -147,14 +150,18 @@ const RecordFormContainer = (props) => {
                     id="species"
                     name="species"
                     placeholder=""
-                    onChange={handleInputChange}
+                    onChange={handleIdChange}
                     value={getRecord.species}
                   >
                     <Options
-                      options={getSpecies.map((species) => ({
-                        name: species.common_name,
-                        id: species.id,
-                      }))}
+                      options={getSpecies
+                        .map((species) => ({
+                          name: species.common_name,
+                          id: species.id,
+                        }))
+                        .sort((a, b) =>
+                          a.name.toUpperCase() > b.name.toUpperCase() ? 1 : -1
+                        )}
                     />
                   </select>
                 </div>{" "}
@@ -178,9 +185,9 @@ const RecordFormContainer = (props) => {
                   >
                     <Options
                       options={[
-                        { name: "Good", id: 0 },
-                        { name: "Bad", id: 1 },
-                        { name: "Meh", id: 2 },
+                        { name: "good", id: 0 },
+                        { name: "bad", id: 1 },
+                        { name: "meh", id: 2 },
                       ]}
                     />
                   </select>
@@ -194,7 +201,7 @@ const RecordFormContainer = (props) => {
               Spot Description:
               <div className="control">
                 <textarea
-                  className="input"
+                  className="textarea"
                   type="textarea"
                   id="body"
                   name="body"
@@ -206,26 +213,26 @@ const RecordFormContainer = (props) => {
             </label>
           </div>
 
-          <div className="field">
+          <div className="field is-grouped">
             <label htmlFor="latitude" className="label">
               Latitude (in decimal format):
               <div className="control">
                 <input
-                  type="tel"
-                  pattern="[0-9*]"
+                  type="number"
+                  step="0.0001"
+                  min="0"
+                  max="90"
                   className="input"
-                  id='latitude'
-                  name='latitude'
+                  id="latitude"
+                  name="latitude"
                   placeholder="Between 0 and 90"
                   onChange={handleInputChange}
                   value={getRecord.latitude}
                 ></input>
               </div>
             </label>
-          </div>
-
-          <div className="field">
-            <label htmlFor="latitudeDirection" className="label">
+            <label htmlFor="latitudeDirection" className="label ml-5">
+              Latitude Direction:
               <div className="control">
                 <div className="select">
                   <select
@@ -233,14 +240,13 @@ const RecordFormContainer = (props) => {
                     type="select"
                     id="latitudeDirection"
                     name="latitudeDirection"
-                    placeholder=""
                     onChange={handleInputChange}
                     value={getRecord.latitudeDirection}
                   >
                     <Options
                       options={[
-                        { name: "N", id: 0 },
-                        { name: "S", id: 1 },
+                        { name: "N", id: 1 },
+                        { name: "S", id: -1 },
                       ]}
                     />
                   </select>
@@ -249,17 +255,17 @@ const RecordFormContainer = (props) => {
             </label>
           </div>
 
-          <div className="field">
+          <div className="field is-grouped">
             <label htmlFor="longitude" className="label">
               Longitude (in decimal format):
               <div className="control">
                 <input
                   type="number"
-                  step='0.0001'
-                  min='0'
-                  max='180'
-                  name='longitude'
-                  id='longitude'
+                  step="0.0001"
+                  min="0"
+                  max="180"
+                  name="longitude"
+                  id="longitude"
                   value={getRecord.longitude}
                   placeholder="Between 0 and 180"
                   onChange={handleInputChange}
@@ -267,10 +273,7 @@ const RecordFormContainer = (props) => {
                 />
               </div>
             </label>
-          </div>
-
-          <div className="field">
-            <label htmlFor="longitudeDirection" className="label">
+            <label htmlFor="longitudeDirection" className="label ml-5"> Longitude Direction:
               <div className="control">
                 <div className="select">
                   <select
@@ -278,14 +281,13 @@ const RecordFormContainer = (props) => {
                     type="select"
                     id="longitudeDirection"
                     name="longitudeDirection"
-                    placeholder=""
                     onChange={handleInputChange}
                     value={getRecord.longitudeDirection}
                   >
                     <Options
                       options={[
-                        { name: "E", id: 0 },
-                        { name: "W", id: 1 },
+                        { name: "E", id: 1 },
+                        { name: "W", id: -1 },
                       ]}
                     />
                   </select>
@@ -296,18 +298,18 @@ const RecordFormContainer = (props) => {
 
           <div className="field">
             <label htmlFor="datetime" className="label">
+              Enter the date and time:
               <div className="control">
-                <div className="datetime_select">
-                  <select
-                    type="datetime_select"
-                    htmlFor="datetime"
-                    id="datetime"
-                    name='datetime'
-                    note="need datetime picker"
-                    className="select"
-                    onChange={handleInputChange}
-                  />
-                </div>
+                <DatePicker
+                  selected={getDatetime}
+                  excludeOutOfBoundsTimes
+                  onChange={(date) => setDatetime(date)}
+                  maxDate={new Date()}
+                  dateFormat="MM/dd/yyyy hh:mm aa"
+                  showTimeSelect
+                  timeIntervals={15}
+                  timeCaption="Time"
+                />
               </div>
             </label>
           </div>
@@ -319,10 +321,10 @@ const RecordFormContainer = (props) => {
               value="Submit"
             />
             <button
-              className="button is-secondary has-text-weight-bold"
+              className="button is-secondary has-text-weight-bold ml-3"
               onClick={clearForm}
             >
-              Clear
+              Clear Form
             </button>
           </div>
         </form>
