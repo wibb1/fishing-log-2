@@ -8,8 +8,6 @@ More importantly this data can then be used to develop a database that gives ins
 
 This app is really dedicated to the fishermen around the Buzzards Bay area but could be used by anyone if they would like.  
 
-Check out the deployed app https://fishing-log-2.herokuapp.com/
-
 ### APIs
 
 To run the app locally you will need to sign up for a code at Stormglass.io and input that into the .ENV file (see example file to see the format).  On Heroku this is not required.
